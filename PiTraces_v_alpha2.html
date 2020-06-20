@@ -127,7 +127,7 @@ MathJax.Hub.Config({
             <td><input type = "checkbox" id = "source1Check" name = "source1Check" value ="source1Active" checked = "checked"><label for = "source1Check">1</label></td>
             <td><input class = "inputs" id="ps1x" type="text" size = "8" value = "0"></td>
             <td><input class = "inputs" id="ps1y" type="text" size = "8" value = "0"></td>
-            <td><input class = "inputs" id="lambda1" type="text" size = "8" value = "0.532"></td>
+            <td><input class = "inputs" id="lambda1" type="text" size = "8" value = "1.064"></td>
             <td><select class = "inputs2" align = "center" id = "source1TraceColor">
                   <option value="Black" >Black</option>
                   <option value="Red" >Red</option>
@@ -179,6 +179,19 @@ MathJax.Hub.Config({
       </canvas>
     </p>
     </div>
+    
+    <div style = "margin-right:5px; padding:none; float:left; background-color:#646464;">
+    <p id = "lens1Info" style = "font-size:1em;  margin:4px; color:#dddddd"></p>
+    </div>
+    
+    <div style = "margin-right:5px; float:left; background-color:#646464;">
+    <p id = "lens2Info" style = "font-size:1em;  margin:4px;  color:#dddddd"></p>
+    </div>
+    
+    <div style = "float:left; background-color:#646464;">
+    <p id = "lens3Info" style = "font-size:1em;  margin:4px;  color:#dddddd"></p>
+    </div>
+    
  </body>
  
  <!-- Run all the JavaScript stuff -->
@@ -683,31 +696,33 @@ Source1.addRays(0.197);
 Source1.traceRays();
 
 
-
+var L1info = document.getElementById("lens1Info");
+var L2info = document.getElementById("lens2Info");
+var L3info = document.getElementById("lens3Info");
 
 //// calculate lens parameters, focal length, etc.
 var lensParameters = function(aLens, aSource)
 {
   var n = indexOfRefraction(aSource.lambda, aLens);
-  invFocalLength = (n-1)*(1/aLens.S1.R-1/aLens.S2.R+(n-1)*aLens.CT/(n*aLens.S1.R*aLens.S2.R));
-  focalLength = 1/invFocalLength;
-  h1 = -focalLength*(n-1)*aLens.CT/(aLens.S2.R*n);
-  h2 = -focalLength*(n-1)*aLens.CT/(aLens.S1.R*n);
-  bfl = focalLength + h2;
-  ffl = focalLength - h1
+  var invFocalLength = (n-1)*(1/aLens.S1.R-1/aLens.S2.R+(n-1)*aLens.CT/(n*aLens.S1.R*aLens.S2.R));
+  var focalLength = 1/invFocalLength;
+  var h1 = -focalLength*(n-1)*aLens.CT/(aLens.S2.R*n);
+  var h2 = -focalLength*(n-1)*aLens.CT/(aLens.S1.R*n);
+  var bfl = focalLength + h2;
+  var ffl = focalLength - h1;
   console.log("focalLength", focalLength);
   console.log("h1", h1);
   console.log("h2", h2);
   console.log("bfl", bfl);
   console.log("ffl", ffl);
+  return [n, focalLength, h1, h2, bfl, ffl];
 }
-lensParameters(L1,Source1);
-
-
-
-
-
-
+var L1dataS1 = lensParameters(L1,Source1);
+var L2dataS1 = lensParameters(L2,Source1);
+var L3dataS1 = lensParameters(L3,Source1);
+L1info.innerHTML="Lens 1 &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L1dataS1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L1dataS1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L1dataS1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L1dataS1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L1dataS1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L1dataS1[3].toFixed(2).toString();
+L2info.innerHTML="Lens 2  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L2dataS1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L2dataS1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L2dataS1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L2dataS1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L2dataS1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L2dataS1[3].toFixed(2).toString();
+L3info.innerHTML="Lens 3  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L3dataS1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L3dataS1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L3dataS1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L3dataS1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L3dataS1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L3dataS1[3].toFixed(2).toString();
 function upDateCanvasView(){
 // change these to for example
 L1.S1.R = parseFloat(document.getElementById("lens1R1").value);
@@ -758,12 +773,6 @@ if (L3Check === true){
 
 document.getElementById("lensTable").addEventListener("change", upDateCanvasView);
 document.getElementById("sourceTable").addEventListener("change", upDateCanvasView);
-
-
-
-
-
-
 
 
 
