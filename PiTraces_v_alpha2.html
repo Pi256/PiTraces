@@ -717,12 +717,52 @@ var lensParameters = function(aLens, aSource)
   console.log("ffl", ffl);
   return [n, focalLength, h1, h2, bfl, ffl];
 }
-var L1dataS1 = lensParameters(L1,Source1);
-var L2dataS1 = lensParameters(L2,Source1);
-var L3dataS1 = lensParameters(L3,Source1);
-L1info.innerHTML="Lens 1 &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L1dataS1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L1dataS1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L1dataS1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L1dataS1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L1dataS1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L1dataS1[3].toFixed(2).toString();
-L2info.innerHTML="Lens 2  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L2dataS1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L2dataS1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L2dataS1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L2dataS1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L2dataS1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L2dataS1[3].toFixed(2).toString();
-L3info.innerHTML="Lens 3  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L3dataS1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L3dataS1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L3dataS1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L3dataS1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L3dataS1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L3dataS1[3].toFixed(2).toString();
+var L1dataSr1 = lensParameters(L1,Source1);
+var L2dataSr1 = lensParameters(L2,Source1);
+var L3dataSr1 = lensParameters(L3,Source1);
+L1info.innerHTML="Lens 1 &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L1dataSr1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L1dataSr1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L1dataSr1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L1dataSr1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L1dataSr1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L1dataSr1[3].toFixed(2).toString();
+L2info.innerHTML="Lens 2  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L2dataSr1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L2dataSr1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L2dataSr1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L2dataSr1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L2dataSr1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L2dataSr1[3].toFixed(2).toString();
+L3info.innerHTML="Lens 3  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L3dataSr1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L3dataSr1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L3dataSr1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L3dataSr1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L3dataSr1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L3dataSr1[3].toFixed(2).toString();
+
+
+// Aperture 1
+var adj = L1.S1.position + L1dataSr1[2]; //adj stands for adjacent, meaning adjacent side of a triangle
+var oppUp = L1.dia*0.8/2 - Source1.y;  // opp stands for opposite, meaning the opposite side of a triangle
+var upAngle = Math.atan(oppUp/adj);
+var oppDown = L1.dia*0.8/2 + Source1.y;
+var downAngle = Math.atan(oppDown/adj);
+var angleDelta = (upAngle + downAngle)/6;
+
+// Find Entrance Aperture due to L2
+var so = L2.S1.position - L1.S2.position - L1dataSr1[3] + L2dataSr1[2]; // relative to h2 (this is backwards on purpose)
+var si = 1/((1/L1dataSr1[1])-(1/so)); // relative to h1 (this is backwards on purpose)
+var entrDia2 = L2.D*Math.abs(si/so); // the new diameter will not depend on the sign of the magnification so abs value is taken.
+var entAp2Pos = L1.S1.position + L1dataSr1[2]-si // this should give the xpos of the Entrance aperture
+
+if (entAp2Pos < 0)
+{
+  
+}
+
+
+// Find Entrance Aperture due to L3
+// first find composite lens
+var focComposite = 1/L1dataSr1[1] + 1/L2dataSr1[1] - so/(L1dataSr1[1]*L2dataSr1[1]);
+var h1Composite = focComposite*so/L2dataSr1[1];
+var h2Composite = -focComposite*so/L1dataSr1[1];
+
+var soComposite = L3.S1.position-L2.S2.position-L2dataSr1[3]-h2Composite;
+var siComposite = 1/((1/focComposite)-(1/soComposite));
+var entrDia3 = L3.D*Math.abs(siComposite/soComposite); // this will give the diameter of the aperture.
+var entAp3Pos = L1.S1.position + L1dataSr1[2]-h1Composite-siComposite;  // this should give the xpos of the Entrance Aperture
+
+if (entAp2Pos < 0)
+{
+  
+}
+
+
+
 function upDateCanvasView(){
 // change these to for example
 L1.S1.R = parseFloat(document.getElementById("lens1R1").value);
