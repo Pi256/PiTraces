@@ -71,9 +71,9 @@ MathJax.Hub.Config({
           </tr>
           <tr>
             <td><input type = "checkbox" id = "lens1Check" name = "lens1Check" value ="L1Active" checked = "checked"><label for = "lens1Check">1</label></td>
-            <td><input class = "inputs" id="lens1R1" type="text" size = "8" value = "100"></td>
-            <td><input class = "inputs" id="lens1R2" type="text" size = "8" value = "-30"></td>
-            <td><input class = "inputs" id="lens1CT" type="text" size = "8" value = "5"></td>
+            <td><input class = "inputs" id="lens1R1" type="text" size = "8" value = "25"></td>
+            <td><input class = "inputs" id="lens1R2" type="text" size = "8" value = "-25"></td>
+            <td><input class = "inputs" id="lens1CT" type="text" size = "8" value = "10"></td>
             <td><input class = "inputs" id="lens1Dia" type="text" size = "8" value = "25"></td>
             <td><input class = "inputs" id="lens1Xpos" type="text" size = "8" value = "50"></td>
             <td><select class = "inputs2" align = "center" id = "lens1Glass">
@@ -83,12 +83,12 @@ MathJax.Hub.Config({
                 </select></td>
           </tr>
           <tr>
-            <td><input type = "checkbox" id = "lens2Check" name = "lens2Check" value ="L2Active"><label for = "lens2Check">2</label></td>
+            <td><input type = "checkbox" id = "lens2Check" name = "lens2Check" value ="L2Active" checked = "checked"><label for = "lens2Check">2</label></td>
             <td><input class = "inputs" id="lens2R1" type="text" size = "8" value = "-20"></td>
             <td><input class = "inputs" id="lens2R2" type="text" size = "8" value = "-75"></td>
             <td><input class = "inputs" id="lens2CT" type="text" size = "8" value = "5"></td>
             <td><input class = "inputs" id="lens2Dia" type="text" size = "8" value = "25"></td>
-            <td><input class = "inputs" id="lens2Xpos" type="text" size = "8" value = "60"></td>
+            <td><input class = "inputs" id="lens2Xpos" type="text" size = "8" value = "70"></td>
             <td><select class = "inputs2" align = "center" id = "lens2Glass">
                   <option value="BK7" selected>BK7</option>
                   <option value="Fused Silica">Fused Silica</option>
@@ -96,12 +96,12 @@ MathJax.Hub.Config({
                 </select></td>
           </tr>
           <tr>
-            <td><input type = "checkbox" id = "lens3Check" name = "lens3Check" value ="L3Active"><label for = "lens3Check">3</label></td>
+            <td><input type = "checkbox" id = "lens3Check" name = "lens3Check" value ="L3Active" checked = "checked"><label for = "lens3Check">3</label></td>
             <td><input class = "inputs" id="lens3R1" type="text" size = "8" value = "-100"></td>
             <td><input class = "inputs" id="lens3R2" type="text" size = "8" value = "-75"></td>
             <td><input class = "inputs" id="lens3CT" type="text" size = "8" value = "10"></td>
             <td><input class = "inputs" id="lens3Dia" type="text" size = "8" value = "25"></td>
-            <td><input class = "inputs" id="lens3Xpos" type="text" size = "8" value = "70"></td>
+            <td><input class = "inputs" id="lens3Xpos" type="text" size = "8" value = "80"></td>
             <td><select class = "inputs2" align = "center" id = "lens3Glass">
                   <option value="BK7" selected>BK7</option>
                   <option value="Fused Silica">Fused Silica</option>
@@ -126,7 +126,7 @@ MathJax.Hub.Config({
           <tr>
             <td><input type = "checkbox" id = "source1Check" name = "source1Check" value ="source1Active" checked = "checked"><label for = "source1Check">1</label></td>
             <td><input class = "inputs" id="ps1x" type="text" size = "8" value = "0"></td>
-            <td><input class = "inputs" id="ps1y" type="text" size = "8" value = "0"></td>
+            <td><input class = "inputs" id="ps1y" type="text" size = "8" value = "7"></td>
             <td><input class = "inputs" id="lambda1" type="text" size = "8" value = "1.064"></td>
             <td><select class = "inputs2" align = "center" id = "source1TraceColor">
                   <option value="Black" >Black</option>
@@ -618,10 +618,9 @@ var Source = function(x, y, lambda, raycolor)
 
 }
 
-Source.prototype.addRays = function(angleRad)
+Source.prototype.addRays = function(angleRad, deltaAngle)
 {
-  var deltaAngle = angleRad/3;
-  //--FUTURE MOD-- number of rays could be increased from 7
+
   for (var j = 0; j < 7; j++)
   {
   this.rays.push(new Ray(this.x, this.y, angleRad, this.lambda));
@@ -691,10 +690,6 @@ var Source2 = new Source(Sr2X,Sr2Y,Sr2Lam,Sr2Color);
 var Source3 = new Source(Sr3X,Sr3Y,Sr3Lam,Sr3Color);
 
 
-Source1.addRays(0.197);
-
-Source1.traceRays();
-
 
 var L1info = document.getElementById("lens1Info");
 var L2info = document.getElementById("lens2Info");
@@ -715,51 +710,77 @@ var lensParameters = function(aLens, aSource)
   console.log("h2", h2);
   console.log("bfl", bfl);
   console.log("ffl", ffl);
-  return [n, focalLength, h1, h2, bfl, ffl];
+  //return [n, focalLength, h1, h2, bfl, ffl];
+  return {
+    n: n,
+    focalLength: focalLength,
+    h1: h1,
+    h2: h2,
+    bfl: bfl,
+    ffl: ffl,
+  }
+    
 }
 var L1dataSr1 = lensParameters(L1,Source1);
 var L2dataSr1 = lensParameters(L2,Source1);
 var L3dataSr1 = lensParameters(L3,Source1);
-L1info.innerHTML="Lens 1 &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L1dataSr1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L1dataSr1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L1dataSr1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L1dataSr1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L1dataSr1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L1dataSr1[3].toFixed(2).toString();
-L2info.innerHTML="Lens 2  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L2dataSr1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L2dataSr1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L2dataSr1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L2dataSr1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L2dataSr1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L2dataSr1[3].toFixed(2).toString();
-L3info.innerHTML="Lens 3  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L3dataSr1[0].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L3dataSr1[1].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L3dataSr1[4].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L3dataSr1[5].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L3dataSr1[2].toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L3dataSr1[3].toFixed(2).toString();
+L1info.innerHTML="Lens 1 &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L1dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L1dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L1dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L1dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L1dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L1dataSr1.h2.toFixed(2).toString();
+L2info.innerHTML="Lens 2  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L2dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L2dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L2dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L2dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L2dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L2dataSr1.h2.toFixed(2).toString();
+L3info.innerHTML="Lens 3  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L3dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L3dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L3dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L3dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L3dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L3dataSr1.h2.toFixed(2).toString();
 
 
 // Aperture 1
-var adj = L1.S1.position + L1dataSr1[2]; //adj stands for adjacent, meaning adjacent side of a triangle
-var oppUp = L1.dia*0.8/2 - Source1.y;  // opp stands for opposite, meaning the opposite side of a triangle
+var adj = L1.S1.position + L1dataSr1.h1; //adj stands for adjacent, meaning adjacent side of a triangle
+var oppUp = L1.S1.D*0.8/2 - Source1.y;  // opp stands for opposite, meaning the opposite side of a triangle
 var upAngle = Math.atan(oppUp/adj);
-var oppDown = L1.dia*0.8/2 + Source1.y;
+var oppDown = L1.S1.D*0.8/2 + Source1.y;
 var downAngle = Math.atan(oppDown/adj);
-var angleDelta = (upAngle + downAngle)/6;
+
+console.log("adj", adj, "oppUp", oppUp, "upAngle", upAngle, "oppDown", oppDown, "downAngle", downAngle, "L1.S1.D", L1.S1.D, "Source1.y", Source1.y);
 
 // Find Entrance Aperture due to L2
-var so = L2.S1.position - L1.S2.position - L1dataSr1[3] + L2dataSr1[2]; // relative to h2 (this is backwards on purpose)
-var si = 1/((1/L1dataSr1[1])-(1/so)); // relative to h1 (this is backwards on purpose)
-var entrDia2 = L2.D*Math.abs(si/so); // the new diameter will not depend on the sign of the magnification so abs value is taken.
-var entAp2Pos = L1.S1.position + L1dataSr1[2]-si // this should give the xpos of the Entrance aperture
+var so = L2.S1.position - L1.S2.position - L1dataSr1.h2 + L2dataSr1.h1; // relative to h2 (this is backwards on purpose)
+var si = 1/((1/L1dataSr1.focalLength)-(1/so)); // relative to h1 (this is backwards on purpose)
+var entrDia2 = L2.S1.D*Math.abs(si/so); // the new diameter will not depend on the sign of the magnification so abs value is taken.
+var entAp2Pos = L1.S1.position + L1dataSr1.h1-si; // this should give the xpos of the Entrance aperture
+var oppUp2 = entrDia2*0.8/2 - Source1.y;
+var upAngle2 = Math.atan(oppUp2/entAp2Pos);
+var oppDown2 = entrDia2*0.8/2 + Source1.y;
+var downAngle2 = Math.atan(oppDown2/entAp2Pos);
 
-if (entAp2Pos < 0)
-{
-  
-}
-
+console.log("so", so, "si", si, "entrDia2", entrDia2, "entAp2Pos", entAp2Pos, "oppUp2", oppUp2, "upAngle2", upAngle2, "oppDown2", oppDown2, "downAngle2", downAngle2);
 
 // Find Entrance Aperture due to L3
 // first find composite lens
-var focComposite = 1/L1dataSr1[1] + 1/L2dataSr1[1] - so/(L1dataSr1[1]*L2dataSr1[1]);
-var h1Composite = focComposite*so/L2dataSr1[1];
-var h2Composite = -focComposite*so/L1dataSr1[1];
+var focComposite = 1/(1/L1dataSr1.focalLength + 1/L2dataSr1.focalLength - so/(L1dataSr1.focalLength*L2dataSr1.focalLength));
+var h1Composite = focComposite*so/L2dataSr1.focalLength;
+var h2Composite = -focComposite*so/L1dataSr1.focalLength;
 
-var soComposite = L3.S1.position-L2.S2.position-L2dataSr1[3]-h2Composite;
+console.log("focComposite", focComposite, "h1Composite", h1Composite, "h2Composite", h2Composite);
+
+// next solve for the Diameter and the aperture position
+var soComposite = L3.S1.position+L3dataSr1.h1-L2.S2.position-L2dataSr1.h2-h2Composite;
 var siComposite = 1/((1/focComposite)-(1/soComposite));
-var entrDia3 = L3.D*Math.abs(siComposite/soComposite); // this will give the diameter of the aperture.
-var entAp3Pos = L1.S1.position + L1dataSr1[2]-h1Composite-siComposite;  // this should give the xpos of the Entrance Aperture
+var entrDia3 = L3.S1.D*Math.abs(siComposite/soComposite); // this will give the diameter of the aperture.
+var entAp3Pos = L1.S1.position + L1dataSr1.h1-h1Composite-siComposite;  // this should give the xpos of the Entrance Aperture
+var oppUp3 = entrDia3*0.8/2 - Source1.y;
+var upAngle3 = Math.atan(oppUp3/entAp3Pos);
+var oppDown3 = entrDia3*0.8/2 + Source1.y;
+var downAngle3 = Math.atan(oppDown3/entAp3Pos);
 
-if (entAp2Pos < 0)
-{
-  
-}
+console.log("soComposite", soComposite, "siComposite", siComposite, "entrDia3", entrDia3, "entAp3Pos", entAp3Pos, "oppUp3", oppUp3, "upAngle3", upAngle3, "oppDown3", oppDown3, "downAngle3", downAngle3);
+
+var upAngles = [upAngle, upAngle2, upAngle3].filter(function(a){return a >= 0});  //select positive values only
+var downAngles = [downAngle, downAngle2, downAngle3].filter(function(a){return a >= 0}); // select positive values only
+var angleTop = Math.min.apply(Math, upAngles);
+var angleBot = Math.min.apply(Math, downAngles);
+var angleDelta = (angleTop+angleBot)/6;
+
+console.log("upAngles", upAngles, "downAngles", downAngles, "angleTop", angleTop, "angleBot", angleBot, "angleDelta", angleDelta);
+
+Source1.addRays(angleTop,angleDelta);
+
+Source1.traceRays();
 
 
 
