@@ -71,11 +71,11 @@ MathJax.Hub.Config({
           </tr>
           <tr>
             <td><input type = "checkbox" id = "lens1Check" name = "lens1Check" value ="L1Active" checked = "checked"><label for = "lens1Check">1</label></td>
-            <td><input class = "inputs" id="lens1R1" type="text" size = "8" value = "25"></td>
+            <td><input class = "inputs" id="lens1R1" type="text" size = "8" value = "50"></td>
             <td><input class = "inputs" id="lens1R2" type="text" size = "8" value = "-25"></td>
             <td><input class = "inputs" id="lens1CT" type="text" size = "8" value = "10"></td>
             <td><input class = "inputs" id="lens1Dia" type="text" size = "8" value = "25"></td>
-            <td><input class = "inputs" id="lens1Xpos" type="text" size = "8" value = "50"></td>
+            <td><input class = "inputs" id="lens1Xpos" type="text" size = "8" value = "29.81"></td>
             <td><select class = "inputs2" align = "center" id = "lens1Glass">
                   <option value="BK7" selected>BK7</option>
                   <option value="Fused Silica">Fused Silica</option>
@@ -83,12 +83,12 @@ MathJax.Hub.Config({
                 </select></td>
           </tr>
           <tr>
-            <td><input type = "checkbox" id = "lens2Check" name = "lens2Check" value ="L2Active" checked = "checked"><label for = "lens2Check">2</label></td>
+            <td><input type = "checkbox" id = "lens2Check" name = "lens2Check" value ="L2Active" checked><label for = "lens2Check">2</label></td>
             <td><input class = "inputs" id="lens2R1" type="text" size = "8" value = "-20"></td>
             <td><input class = "inputs" id="lens2R2" type="text" size = "8" value = "-75"></td>
             <td><input class = "inputs" id="lens2CT" type="text" size = "8" value = "5"></td>
             <td><input class = "inputs" id="lens2Dia" type="text" size = "8" value = "25"></td>
-            <td><input class = "inputs" id="lens2Xpos" type="text" size = "8" value = "70"></td>
+            <td><input class = "inputs" id="lens2Xpos" type="text" size = "8" value = "140"></td>
             <td><select class = "inputs2" align = "center" id = "lens2Glass">
                   <option value="BK7" selected>BK7</option>
                   <option value="Fused Silica">Fused Silica</option>
@@ -96,12 +96,12 @@ MathJax.Hub.Config({
                 </select></td>
           </tr>
           <tr>
-            <td><input type = "checkbox" id = "lens3Check" name = "lens3Check" value ="L3Active" checked = "checked"><label for = "lens3Check">3</label></td>
+            <td><input type = "checkbox" id = "lens3Check" name = "lens3Check" value ="L3Active" checked><label for = "lens3Check">3</label></td>
             <td><input class = "inputs" id="lens3R1" type="text" size = "8" value = "-100"></td>
             <td><input class = "inputs" id="lens3R2" type="text" size = "8" value = "-75"></td>
             <td><input class = "inputs" id="lens3CT" type="text" size = "8" value = "10"></td>
             <td><input class = "inputs" id="lens3Dia" type="text" size = "8" value = "25"></td>
-            <td><input class = "inputs" id="lens3Xpos" type="text" size = "8" value = "80"></td>
+            <td><input class = "inputs" id="lens3Xpos" type="text" size = "8" value = "150"></td>
             <td><select class = "inputs2" align = "center" id = "lens3Glass">
                   <option value="BK7" selected>BK7</option>
                   <option value="Fused Silica">Fused Silica</option>
@@ -126,7 +126,7 @@ MathJax.Hub.Config({
           <tr>
             <td><input type = "checkbox" id = "source1Check" name = "source1Check" value ="source1Active" checked = "checked"><label for = "source1Check">1</label></td>
             <td><input class = "inputs" id="ps1x" type="text" size = "8" value = "0"></td>
-            <td><input class = "inputs" id="ps1y" type="text" size = "8" value = "7"></td>
+            <td><input class = "inputs" id="ps1y" type="text" size = "8" value = "0"></td>
             <td><input class = "inputs" id="lambda1" type="text" size = "8" value = "1.064"></td>
             <td><select class = "inputs2" align = "center" id = "source1TraceColor">
                   <option value="Black" >Black</option>
@@ -211,6 +211,16 @@ var sketchProc = function(processingInstance) {
 
 var sF = 3.5;
 // Create surface Object units are pixels where 1px = 0.5 mm
+var surfaceFlat = function(D, position){
+  this.D = D; //diameter of the flat surface
+  this.position = position; //x-position of the surface
+}
+
+surfaceFlat.prototype.display = function()
+{
+  strokeWeight(2);
+  line(this.position*sF, -this.D*sF/2+height/2, this.position*sF, this.D*sF/2 + height/2);
+}
 var surfaceSpherical = function(R, D, position){
   this.R = R;  //radius of curvature
   this.D = D;   // diameter of surface
@@ -389,6 +399,10 @@ var L3Check = document.getElementById("lens3Check").checked;
 var S5 = new surfaceSpherical(L3R1, L3Dia, L3Xpos);
 var S6 = new surfaceSpherical(L3R2, L3Dia, L3Xpos+L3CT);
 var L3 = new lensSpherical(S5, S6, L3CT,L3Glass);
+
+var DetXpos = parseFloat(document.getElementById("det1x").value);
+var D1 = new surfaceFlat(50, DetXpos);
+
 background(64, 224, 208);
 
 if (L1Check == true){
@@ -401,6 +415,7 @@ if (L3Check == true){
   L3.display();
 }
 
+D1.display();
 
 mousePressed = function()
 {
@@ -464,8 +479,13 @@ var Ray = function(x, y, angle, wavelength){
   this.wavelength = wavelength;
 };
 
-
-
+var tl82det = function(aRay, aFlatSurface) // tl82det means trans(t)late(l8) to(2) detector(det)
+{
+  
+  aRay.y = (aFlatSurface.position - aRay.x)*Math.tan(aRay.angle);
+  aRay.x = aFlatSurface.position;
+  
+}
 
  var tl82bndry = function(aRay, aLensSurface)    // tl82bndry means trans(t)late(l8) to(2) boundary(bndry) formerly ttb1 and ttb2.  trying to reuse code here.
  {
@@ -594,6 +614,13 @@ var indexOfRefraction = function(aWavelength, aLens)
  
  xbndry(aRay,aLens, false);
  
+ }
+ 
+ var traceRay2Det = function(aRay, aFlatSurface, aColor = color(0))
+ {
+   var myRayY = [];
+   var myRayX = [];
+   /// -------------------------CONTINUE HERE -------------------------///
  }
  
 var Source = function(x, y, lambda, raycolor)
@@ -762,7 +789,7 @@ console.log("focComposite", focComposite, "h1Composite", h1Composite, "h2Composi
 var soComposite = L3.S1.position+L3dataSr1.h1-L2.S2.position-L2dataSr1.h2-h2Composite;
 var siComposite = 1/((1/focComposite)-(1/soComposite));
 var entrDia3 = L3.S1.D*Math.abs(siComposite/soComposite); // this will give the diameter of the aperture.
-var entAp3Pos = L1.S1.position + L1dataSr1.h1-h1Composite-siComposite;  // this should give the xpos of the Entrance Aperture
+var entAp3Pos = L1.S1.position + L1dataSr1.h1+h1Composite-siComposite;  // this should give the xpos of the Entrance Aperture
 var oppUp3 = entrDia3*0.8/2 - Source1.y;
 var upAngle3 = Math.atan(oppUp3/entAp3Pos);
 var oppDown3 = entrDia3*0.8/2 + Source1.y;
