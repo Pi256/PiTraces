@@ -17,10 +17,11 @@ MathJax.Hub.Config({
     }
   });
 // ]]></script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">// <![CDATA[
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">// <![CDATA[
 
 // ]]>
 //https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.0.1/es5/startup.js
+//https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 //http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 </script>
 
@@ -36,7 +37,7 @@ MathJax.Hub.Config({
   }
   
   #lensTable th, #sourceTable th, #detectorTable th {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     border: 1.5px solid #ddd;
     padding: 8px;
   }
@@ -70,12 +71,12 @@ MathJax.Hub.Config({
             <th>glass</th>
           </tr>
           <tr>
-            <td><input type = "checkbox" id = "lens1Check" name = "lens1Check" value ="L1Active" checked = "checked"><label for = "lens1Check">1</label></td>
+            <td><input type = "checkbox" id = "lens1Check" name = "lens1Check" value ="L1Active" checked><label for = "lens1Check">1</label></td>
             <td><input class = "inputs" id="lens1R1" type="text" size = "8" value = "50"></td>
             <td><input class = "inputs" id="lens1R2" type="text" size = "8" value = "-25"></td>
             <td><input class = "inputs" id="lens1CT" type="text" size = "8" value = "10"></td>
             <td><input class = "inputs" id="lens1Dia" type="text" size = "8" value = "25"></td>
-            <td><input class = "inputs" id="lens1Xpos" type="text" size = "8" value = "29.81"></td>
+            <td><input class = "inputs" id="lens1Xpos" type="text" size = "8" value = "50"></td>
             <td><select class = "inputs2" align = "center" id = "lens1Glass">
                   <option value="BK7" selected>BK7</option>
                   <option value="Fused Silica">Fused Silica</option>
@@ -88,7 +89,7 @@ MathJax.Hub.Config({
             <td><input class = "inputs" id="lens2R2" type="text" size = "8" value = "-75"></td>
             <td><input class = "inputs" id="lens2CT" type="text" size = "8" value = "5"></td>
             <td><input class = "inputs" id="lens2Dia" type="text" size = "8" value = "25"></td>
-            <td><input class = "inputs" id="lens2Xpos" type="text" size = "8" value = "50"></td>
+            <td><input class = "inputs" id="lens2Xpos" type="text" size = "8" value = "70"></td>
             <td><select class = "inputs2" align = "center" id = "lens2Glass">
                   <option value="BK7" selected>BK7</option>
                   <option value="Fused Silica">Fused Silica</option>
@@ -101,7 +102,7 @@ MathJax.Hub.Config({
             <td><input class = "inputs" id="lens3R2" type="text" size = "8" value = "-75"></td>
             <td><input class = "inputs" id="lens3CT" type="text" size = "8" value = "10"></td>
             <td><input class = "inputs" id="lens3Dia" type="text" size = "8" value = "25"></td>
-            <td><input class = "inputs" id="lens3Xpos" type="text" size = "8" value = "60"></td>
+            <td><input class = "inputs" id="lens3Xpos" type="text" size = "8" value = "110"></td>
             <td><select class = "inputs2" align = "center" id = "lens3Glass">
                   <option value="BK7" selected>BK7</option>
                   <option value="Fused Silica">Fused Silica</option>
@@ -124,7 +125,7 @@ MathJax.Hub.Config({
             <th>Color</th>
           </tr>
           <tr>
-            <td><input type = "checkbox" id = "source1Check" name = "source1Check" value ="source1Active" checked = "checked"><label for = "source1Check">1</label></td>
+            <td><input type = "checkbox" id = "source1Check" name = "source1Check" value ="source1Active" checked><label for = "source1Check">1</label></td>
             <td><input class = "inputs" id="ps1x" type="text" size = "8" value = "0"></td>
             <td><input class = "inputs" id="ps1y" type="text" size = "8" value = "0"></td>
             <td><input class = "inputs" id="lambda1" type="text" size = "8" value = "1.064"></td>
@@ -135,7 +136,7 @@ MathJax.Hub.Config({
                 </select></td>
           </tr>
           <tr>
-            <td><input type = "checkbox" id = "source2Check" name = "source2Check" value ="source2Active" checked><label for = "source2Check">2</label></td>
+            <td><input type = "checkbox" id = "source2Check" name = "source2Check" value ="source2Active" unchecked><label for = "source2Check">2</label></td>
             <td><input class = "inputs" id="ps2x" type="text" size = "8" value = "0"></td>
             <td><input class = "inputs" id="ps2y" type="text" size = "8" value = "2"></td>
             <td><input class = "inputs" id="lambda2" type="text" size = "8" value = "0.532"></td>
@@ -146,9 +147,9 @@ MathJax.Hub.Config({
                 </select></td>
           </tr>
           <tr>
-            <td><input type = "checkbox" id = "source3Check" name = "source3Check" value ="source3Active"><label for = "source3Check">3</label></td>
+            <td><input type = "checkbox" id = "source3Check" name = "source3Check" value ="source3Active" unchecked><label for = "source3Check">3</label></td>
             <td><input class = "inputs" id="ps3x" type="text" size = "8" value = "0"></td>
-            <td><input class = "inputs" id="ps3y" type="text" size = "8" value = "20"></td>
+            <td><input class = "inputs" id="ps3y" type="text" size = "8" value = "4"></td>
             <td><input class = "inputs" id="lambda3" type="text" size = "8" value = "0.532"></td>
             <td><select class = "inputs2" align = "center" id = "source3TraceColor">
                   <option value="Black" selected>Black</option>
@@ -197,10 +198,13 @@ MathJax.Hub.Config({
  <!-- Run all the JavaScript stuff -->
  <!-- Include the processing.js library -->
  <!-- See https://khanacademy.zendesk.com/hc/en-us/articles/202260404-What-parts-of-ProcessingJS-does-Khan-Academy-support- for differences -->
+
  <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script>
  
  <script>
-
+ //https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.min.js
+ //https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.js
+ //https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js
 
 var sketchProc = function(processingInstance) {
   with (processingInstance) {
@@ -211,7 +215,8 @@ var sketchProc = function(processingInstance) {
 
 var sF = 3.5;
 // Create surface Object units are pixels where 1px = 0.5 mm
-var surfaceFlat = function(D, position){
+var surfaceFlat = function(D, position)
+{
   this.D = D; //diameter of the flat surface
   this.position = position; //x-position of the surface
 }
@@ -221,14 +226,17 @@ surfaceFlat.prototype.display = function()
   strokeWeight(2);
   line(this.position*sF, -this.D*sF/2+height/2, this.position*sF, this.D*sF/2 + height/2);
 }
-var surfaceSpherical = function(R, D, position){
+
+var surfaceSpherical = function(R, D, position)
+{
   this.R = R;  //radius of curvature
   this.D = D;   // diameter of surface
   this.position = position;  // x-position of surface (where the surface crosses the x-axis)
 };
 
 // Create a lens Object that takes as an input 2 surface objects.  S1 is the front Surface.  S2 is the back surface
-var lensSpherical = function (S1, S2, CT, glass){
+var lensSpherical = function (S1, S2, CT, glass)
+{
   this.S1 = S1;
   this.S2 = S2;
   this.CT = CT;
@@ -337,7 +345,6 @@ lensSpherical.prototype.display = function()
   
 }
 
-
 lensSpherical.prototype.handleClick = function(mx, my)
 {
   if (mx>this.S1.position*sF && mx < (this.S1.position + this.CT)*sF)
@@ -417,60 +424,11 @@ if (L3Check == true){
 
 D1.display();
 
-mousePressed = function()
+
+
+
+var Ray = function(x, y, angle, wavelength)
 {
-  if (document.getElementById("lens1Check").checked === true){
-    //console.log("here?");
-    L1.handleClick(mouseX, mouseY);
-}
-  if (document.getElementById("lens2Check").checked === true){
-    L2.S1.position = parseFloat(document.getElementById("lens2Xpos").value);
-    L2.handleClick(mouseX, mouseY);
-}
-  if (document.getElementById("lens3Check").checked === true){
-    L3.S1.position = parseFloat(document.getElementById("lens3Xpos").value);
-    L3.handleClick(mouseX, mouseY);
-}
-}
-
-mouseDragged = function()
-{
-  if (document.getElementById("lens1Check").checked === true){
-    
-    L1.handleDrag(mouseX, mouseY);
-    document.getElementById("lens1Xpos").value = L1.S1.position.toFixed(2);
-    upDateCanvasView();
-}
-  if (document.getElementById("lens2Check").checked === true){
-    L2.handleDrag(mouseX, mouseY);
-    document.getElementById("lens2Xpos").value = L2.S1.position.toFixed(2);
-    upDateCanvasView();
-}
-  if (document.getElementById("lens3Check").checked === true){
-    L3.handleDrag(mouseX, mouseY);
-    document.getElementById("lens3Xpos").value = L3.S1.position.toFixed(2);
-    upDateCanvasView();
-}
-}
-
-mouseReleased = function()
-{
-  if (document.getElementById("lens1Check").checked === true){
-    L1.stopDrag();
-  
-}
-  if (document.getElementById("lens2Check").checked === true){
-    L2.stopDrag();
-  
-}
-  if (document.getElementById("lens3Check").checked === true){
-    L3.stopDrag();
-  
-}
-}
-
-
-var Ray = function(x, y, angle, wavelength){
   this.x = x;
   this.y = y;
   this.angle = angle;
@@ -515,8 +473,6 @@ var tl82bndry = function(aRay, aLensSurface)    // tl82bndry means trans(t)late(
    aRay.y = y2;
  }
  
-
- 
 var indexOfRefraction = function(aWavelength, aLens)
 {
     var lam2 = Math.pow(aWavelength,2);
@@ -535,6 +491,10 @@ var indexOfRefraction = function(aWavelength, aLens)
   {
     var nSqrd = 1 + 3.00 + (1.90*lam2)/(lam2 - 0.113);
     var n = Math.sqrt(nSqrd);
+  }
+  else
+  {
+    console.log("Something Went Bad Wrong with glass selection");
   }
   return n;
 }
@@ -590,8 +550,9 @@ var traceRay = function(aRay, aLens, aColor=color(0))
  {
    myRayX[j] = xa*sF + j;
    myRayY[j] = slope*myRayX[j]+icept*sF;
-   //console.log("myRayX[j]", myRayX[j], "myRayY[j]", myRayY[j]);
+   //console.log("myRayX[",j,"]",myRayX[j], "myRayY[",j,"]", myRayY[j]);
    set(myRayX[j], myRayY[j]+height/2, aColor ); // aColor
+   //console.log("myRayX[",j,"]",myRayX[j], "myRayY[",j,"]", myRayY[j]);
  }
  
  xbndry(aRay,aLens, true);
@@ -638,10 +599,10 @@ var traceRay2Det = function(aRay, aFlatSurface, aColor = color(0))
  
 var colorName2RGB = function(colorname)
 {
-  var tempColor = color(0);
+  var tempColor = color(0,0,0);
   if (colorname === "Black")
   {
-    tempColor = color(0);
+    tempColor = color(0,0,0);
   }
   else if (colorname === "Red")
   {
@@ -674,6 +635,19 @@ Source.prototype.addRays = function(angleRad, deltaAngle)
   }
 }
 
+Source.prototype.changeRays = function(angleRad, deltaAngle)
+{
+  for (var j = 0; j < 7; j++)
+  {
+  this.rays[j].x = this.x;
+  this.rays[j].y = this.y;
+  this.rays[j].angle = angleRad;
+  this.rays[j].wavelength = this.lambda;
+  angleRad -= deltaAngle;
+  }
+}
+  
+
 Source.prototype.removeRays = function()
 {
   for (var j = 0; j < 7; j++)
@@ -686,36 +660,18 @@ Source.prototype.traceRays = function()
 {
   for (var j = 0; j < 7; j++)
   {
-    if (L1Check && L2Check && L3Check)
+    
+    if (L1Check)
     {
-    traceRay(this.rays[j], L1, this.color);
-    traceRay(this.rays[j], L2, this.color);
-    traceRay(this.rays[j], L3, this.color);
+    traceRay(this.rays[j], L1, this.color);//this.color);
     }
-    else if (L1Check && L2Check)
-    {
-    traceRay(this.rays[j], L1, this.color);
-    traceRay(this.rays[j], L2, this.color);
-    }
-    else if (L1Check && L3Check)
-    {
-    traceRay(this.rays[j], L1, this.color);
-    traceRay(this.rays[j], L3, this.color);
-    }
-    else if (L2Check && L3Check)
-    {
-    traceRay(this.rays[j], L2, this.color);
-    traceRay(this.rays[j], L3, this.color);
-    }
-    else if (L1Check)
-    {
-    traceRay(this.rays[j], L1, this.color);
-    }
-    else if (L2Check)
+    
+    if (L2Check)
     {
     traceRay(this.rays[j], L2, this.color);
     }
-    else if (L3Check)
+    
+    if (L3Check)
     {
     traceRay(this.rays[j], L3, this.color);
     }
@@ -761,12 +717,7 @@ var lensParameters = function(aLens, aSource)
   var h2 = -focalLength*(n-1)*aLens.CT/(aLens.S1.R*n);
   var bfl = focalLength + h2;
   var ffl = focalLength - h1;
-  //console.log("focalLength", focalLength);
-  //console.log("h1", h1);
-  //console.log("h2", h2);
-  //console.log("bfl", bfl);
-  //console.log("ffl", ffl);
-  //return [n, focalLength, h1, h2, bfl, ffl];
+
   return {
     n: n,
     focalLength: focalLength,
@@ -810,7 +761,7 @@ var rayBundleAngles = function(L1, L2, L3, Source, L1data, L2data, L3data)
   var si = 1/((1/L1data.focalLength)-(1/so)); // relative to h1 (this is backwards on purpose)
   var entrDia2 = L2.S1.D*Math.abs(si/so); // the new diameter will not depend on the sign of the magnification so abs value is taken.
   var entAp2Pos = L1.S1.position + L1data.h1-si; // this should give the xpos of the Entrance aperture
-  var oppUp2 = entrDia2*0.8/2 - Source.y;
+  var oppUp2 = entrDia2*0.8/2 - Source.y; // this might be switched with oppDown2!!!!!LOOK INTO THIS
   var upAngle2 = Math.atan(oppUp2/entAp2Pos);
   var oppDown2 = entrDia2*0.8/2 + Source.y;
   var downAngle2 = Math.atan(oppDown2/entAp2Pos);
@@ -849,29 +800,33 @@ var rayBundleAngles = function(L1, L2, L3, Source, L1data, L2data, L3data)
   }
   //console.log("upAngles", upAngles, "downAngles", downAngles, "angleTop", angleTop, "angleBot", angleBot, "angleDelta", angleDelta);
 }
+
 var rayBundleAnglesSr1 = rayBundleAngles(L1, L2, L3, Source1, L1dataSr1, L2dataSr1, L3dataSr1);
+//console.log("rbaBot",rayBundleAnglesSr1.angleBot, "rbaTop", rayBundleAnglesSr1.angleTop, "rbaDelta",rayBundleAnglesSr1.angleDelta);
 var rayBundleAnglesSr2 = rayBundleAngles(L1, L2, L3, Source2, L1dataSr2, L2dataSr2, L3dataSr2);
-var rayBundleAnglesSr2 = rayBundleAngles(L1, L2, L3, Source3, L1dataSr3, L2dataSr3, L3dataSr3);
+var rayBundleAnglesSr3 = rayBundleAngles(L1, L2, L3, Source3, L1dataSr3, L2dataSr3, L3dataSr3);
 
+Source1.addRays(rayBundleAnglesSr1.angleTop, rayBundleAnglesSr1.angleDelta);
+Source2.addRays(rayBundleAnglesSr2.angleTop, rayBundleAnglesSr2.angleDelta);
+Source3.addRays(rayBundleAnglesSr3.angleTop, rayBundleAnglesSr3.angleDelta);
 
-if (Sr1Check === true)
+if (Sr1Check)
 {
-  Source1.addRays(rayBundleAnglesSr1.angleTop, rayBundleAnglesSr1.angleDelta);
   Source1.traceRays();
 }
-if (Sr2Check === true)
+if (Sr2Check)
 {
-  Source2.addRays(rayBundleAnglesSr2.angleTop, rayBundleAnglesSr2.angleDelta);
   Source2.traceRays();
 }
-if (Sr3Check === true)
+
+if (Sr3Check)
 {
-  Source3.addRays(rayBundleAnglesSr3.angleTop, rayBundleAnglesSr3.angleDelta);
   Source3.traceRays();
 }
 
 
-function upDateCanvasView(){
+var upDateCanvasView =function()
+{
 // change these to for example
 L1.S1.R = parseFloat(document.getElementById("lens1R1").value);
 L1.S2.R = parseFloat(document.getElementById("lens1R2").value);
@@ -905,15 +860,15 @@ L3Check = document.getElementById("lens3Check").checked;
 
 background(64, 224, 208);
 
-if (L1Check === true){
+if (L1Check){
   
   L1.display();
 }
-if (L2Check === true){
+if (L2Check){
   
   L2.display();
 }
-if (L3Check === true){
+if (L3Check){
   
   L3.display();
 }
@@ -955,32 +910,34 @@ L1info.innerHTML="Lens 1 &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.l
 L2info.innerHTML="Lens 2  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L2dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L2dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L2dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L2dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L2dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L2dataSr1.h2.toFixed(2).toString();
 L3info.innerHTML="Lens 3  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L3dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L3dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L3dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L3dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L3dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L3dataSr1.h2.toFixed(2).toString();
  
+console.log(Sr1Check, Sr2Check, Sr3Check);
 
-
-if (Sr1Check === true)
+if (Sr1Check)
 {
-  Source1.removeRays();
+  //Source1.removeRays();
   rayBundleAnglesSr1 = rayBundleAngles(L1, L2, L3, Source1, L1dataSr1, L2dataSr1, L3dataSr1);
   //console.log("rbaBot",rayBundleAnglesSr1.angleBot, "rbaTop", rayBundleAnglesSr1.angleTop, "rbaDelta",rayBundleAnglesSr1.angleDelta);
-  Source1.addRays(rayBundleAnglesSr1.angleTop, rayBundleAnglesSr1.angleDelta);
+  Source1.changeRays(rayBundleAnglesSr1.angleTop, rayBundleAnglesSr1.angleDelta);
   //var lengo = Source1.rays.length;
-  //console.log("rays length", lengo);
+  console.log(Source1.x, Source1.y);
   Source1.traceRays();
 }
 
-if (Sr2Check === true)
+if (Sr2Check)
 {
-  Source2.removeRays();
+  //Source2.removeRays();
   rayBundleAnglesSr2 = rayBundleAngles(L1, L2, L3, Source2, L1dataSr2, L2dataSr2, L3dataSr2);
-  Source2.addRays(rayBundleAnglesSr2.angleTop, rayBundleAnglesSr2.angleDelta);
+  Source2.changeRays(rayBundleAnglesSr2.angleTop, rayBundleAnglesSr2.angleDelta);
+  console.log(Source2.x, Source2.y);
   Source2.traceRays();
 }
 
-if (Sr3Check === true)
+if (Sr3Check)
 {
-  Source3.removeRays();
+  //Source3.removeRays();
   rayBundleAnglesSr3 = rayBundleAngles(L1, L2, L3, Source3, L1dataSr3, L2dataSr3, L3dataSr3);
-  Source3.addRays(rayBundleAnglesSr3.angleTop, rayBundleAnglesSr3.angleDelta);
+  Source3.changeRays(rayBundleAnglesSr3.angleTop, rayBundleAnglesSr3.angleDelta);
+  console.log(Source3.x, Source3.y);
   Source3.traceRays();
 }
   
@@ -990,6 +947,57 @@ document.getElementById("lensTable").addEventListener("change", upDateCanvasView
 document.getElementById("sourceTable").addEventListener("change", upDateCanvasView);
 
 
+mousePressed = function()
+{
+  if (document.getElementById("lens1Check").checked === true){
+    //console.log("here?");
+    L1.handleClick(mouseX, mouseY);
+}
+  if (document.getElementById("lens2Check").checked === true){
+    L2.S1.position = parseFloat(document.getElementById("lens2Xpos").value);
+    L2.handleClick(mouseX, mouseY);
+}
+  if (document.getElementById("lens3Check").checked === true){
+    L3.S1.position = parseFloat(document.getElementById("lens3Xpos").value);
+    L3.handleClick(mouseX, mouseY);
+}
+}
+
+mouseDragged = function()
+{
+  if (document.getElementById("lens1Check").checked === true){
+    
+    L1.handleDrag(mouseX, mouseY);
+    document.getElementById("lens1Xpos").value = L1.S1.position.toFixed(2);
+    upDateCanvasView();
+}
+  if (document.getElementById("lens2Check").checked === true){
+    L2.handleDrag(mouseX, mouseY);
+    document.getElementById("lens2Xpos").value = L2.S1.position.toFixed(2);
+    upDateCanvasView();
+}
+  if (document.getElementById("lens3Check").checked === true){
+    L3.handleDrag(mouseX, mouseY);
+    document.getElementById("lens3Xpos").value = L3.S1.position.toFixed(2);
+    upDateCanvasView();
+}
+}
+
+mouseReleased = function()
+{
+  if (document.getElementById("lens1Check").checked === true){
+    L1.stopDrag();
+  
+}
+  if (document.getElementById("lens2Check").checked === true){
+    L2.stopDrag();
+  
+}
+  if (document.getElementById("lens3Check").checked === true){
+    L3.stopDrag();
+  
+}
+}
 
 
   }};
