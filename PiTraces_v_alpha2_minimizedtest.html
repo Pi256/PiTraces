@@ -6,7 +6,7 @@ https://github.com/Team-Code/KA_Offline -->
 
 <html>
  <head>
-    <title>Simple Ray Trace</title>
+    <title>TEst Simple Ray Trace</title>
     
 <script type="text/x-mathjax-config">// <![CDATA[
 MathJax.Hub.Config({
@@ -93,14 +93,14 @@ MathJax.Hub.Config({
             <td><input class = "inputs" id="lens2Dia" type="text" size = "8" value = "25"></td>
             <td><input class = "inputs" id="lens2Xpos" type="text" size = "8" value = "70"></td>
             <td><select class = "inputs2" align = "center" id = "lens2Glass">
-                  <option value="BK7" selected>BK7</option>
-                  <option value="Fused Silica">Fused Silica</option>
+                  <option value="BK7" >BK7</option>
+                  <option value="Fused Silica" selected>Fused Silica</option>
                   <option value="ZnSe">ZnSe</option>
                 </select></td>
           </tr>
           <tr>
             <td><input type = "checkbox" id = "lens3Check" name = "lens3Check" value ="L3Active" checked><label for = "lens3Check">3</label></td>
-            <td><input class = "inputs" id="lens3R1" type="text" size = "8" value = "-100"></td>
+            <td><input class = "inputs" id="lens3R1" type="text" size = "8" value = "30"></td>
             <td><input class = "inputs" id="lens3R2" type="text" size = "8" value = "-75"></td>
             <td><input class = "inputs" id="lens3CT" type="text" size = "8" value = "10"></td>
             <td><input class = "inputs" id="lens3Dia" type="text" size = "8" value = "25"></td>
@@ -138,7 +138,7 @@ MathJax.Hub.Config({
                 </select></td>
           </tr>
           <tr>
-            <td><input type = "checkbox" id = "source2Check" name = "source2Check" value ="source2Active" unchecked><label for = "source2Check">2</label></td>
+            <td><input type = "checkbox" id = "source2Check" name = "source2Check" value ="source2Active" checked><label for = "source2Check">2</label></td>
             <td><input class = "inputs" id="ps2x" type="text" size = "8" value = "0"></td>
             <td><input class = "inputs" id="ps2y" type="text" size = "8" value = "2"></td>
             <td><input class = "inputs" id="lambda2" type="text" size = "8" value = "0.532"></td>
@@ -149,13 +149,13 @@ MathJax.Hub.Config({
                 </select></td>
           </tr>
           <tr>
-            <td><input type = "checkbox" id = "source3Check" name = "source3Check" value ="source3Active" unchecked><label for = "source3Check">3</label></td>
+            <td><input type = "checkbox" id = "source3Check" name = "source3Check" value ="source3Active" checked><label for = "source3Check">3</label></td>
             <td><input class = "inputs" id="ps3x" type="text" size = "8" value = "0"></td>
             <td><input class = "inputs" id="ps3y" type="text" size = "8" value = "4"></td>
-            <td><input class = "inputs" id="lambda3" type="text" size = "8" value = "0.532"></td>
+            <td><input class = "inputs" id="lambda3" type="text" size = "8" value = "0.405"></td>
             <td><select class = "inputs2" align = "center" id = "source3TraceColor">
-                  <option value="Black" selected>Black</option>
-                  <option value="Red">Red</option>
+                  <option value="Black">Black</option>
+                  <option value="Red" selected>Red</option>
                   <option value="Blue">Blue</option>
                 </select></td>
           </tr>
@@ -212,10 +212,9 @@ var sketchProc = function(processingInstance) {
     size(800, 200);
     frameRate(24);
         
-    // ProgramCodeGoesHere
-
-var sF = 3.5;
-// Create surface Object units are pixels where 1px = 0.5 mm
+var sF = 3.5;  //scale factor
+var caF = 0.8;  // clear aperture factor
+//Create surface Object units are pixels where 1px = 0.5 mm
 var surfaceFlat = function(D, position)
 {
   this.D = D; //diameter of the flat surface
@@ -224,7 +223,7 @@ var surfaceFlat = function(D, position)
 
 surfaceFlat.prototype.display = function()
 {
-  strokeWeight(2);
+  strokeWeight(1.5);
   line(this.position*sF, -this.D*sF/2+height/2, this.position*sF, this.D*sF/2 + height/2);
 }
 
@@ -370,53 +369,6 @@ lensSpherical.prototype.stopDrag = function()
     this.drag = false;
 }
 
-
-var Ray = function(x, y, angle, wavelength)
-{
-  this.x = x;
-  this.y = y;
-  this.angle = angle;
-  this.wavelength = wavelength;
-};
-
-var tl82det = function(aRay, aFlatSurface) // tl82det means trans(t)late(l8) to(2) detector(det)
-{
-  
-  aRay.y = (aFlatSurface.position - aRay.x)*Math.tan(aRay.angle);
-  aRay.x = aFlatSurface.position;
-  
-}
-
-var tl82bndry = function(aRay, aLensSurface)    // tl82bndry means trans(t)late(l8) to(2) boundary(bndry) formerly ttb1 and ttb2.  trying to reuse code here.
-{
-   var m = Math.tan(aRay.angle);
-   var b = aRay.y-m*aRay.x;
-   var x2Part1 = -m*b + aLensSurface.R + aLensSurface.position;
-   var x2Part2 = Math.pow(-x2Part1, 2);
-   var x2Part3 = 1+Math.pow(m,2);
-   var x2Part4 = x2Part3*(Math.pow(b,2)+2*aLensSurface.position*aLensSurface.R+Math.pow(aLensSurface.position,2));
-   if (aLensSurface.R > 0)
-   {
-      var x2 = (x2Part1-Math.sqrt(x2Part2 - x2Part4))/x2Part3;
-   }
-   else if (aLensSurface.R < 0)
-   {
-     var x2 = (x2Part1+Math.sqrt(x2Part2 - x2Part4))/x2Part3;
-   }
-   
-   else if (aLensSurface.R == 0)
-   {
-     text("R cannot be 0",aLensSurface.x, aLensSurface.y);
-     
-   }
-   
-   var y2 = m*x2 + b;
-   
-   // reassign
-   aRay.x = x2;
-   aRay.y = y2;
- }
- 
 var indexOfRefraction = function(aWavelength, aLens)
 {
     var lam2 = Math.pow(aWavelength,2);
@@ -442,6 +394,54 @@ var indexOfRefraction = function(aWavelength, aLens)
   }
   return n;
 }
+
+var Ray = function(x, y, angle, wavelength)
+{
+  this.x = x;
+  this.y = y;
+  this.angle = angle;
+  this.wavelength = wavelength;
+  //this.go = true;
+};
+
+var tl82det = function(aRay, aFlatSurface) // tl82det means trans(t)late(l8) to(2) detector(det)
+{
+  
+  aRay.y = (aFlatSurface.position - aRay.x)*Math.tan(aRay.angle)+aRay.y;
+  aRay.x = aFlatSurface.position;
+  
+}
+
+var tl82bndry = function(aRay, aLensSurface)    // tl82bndry means trans(t)late(l8) to(2) boundary(bndry) formerly ttb1 and ttb2.  trying to reuse code here.
+{
+  var m = Math.tan(aRay.angle);
+  var b = aRay.y-m*aRay.x;
+  var x2Part1 = -m*b + aLensSurface.R + aLensSurface.position;
+  var x2Part2 = Math.pow(-x2Part1, 2);
+  var x2Part3 = 1+Math.pow(m,2);
+  var x2Part4 = x2Part3*(Math.pow(b,2)+2*aLensSurface.position*aLensSurface.R+Math.pow(aLensSurface.position,2));
+  if (aLensSurface.R > 0)
+  {
+      var x2 = (x2Part1-Math.sqrt(x2Part2 - x2Part4))/x2Part3;
+  }
+  else if (aLensSurface.R < 0)
+  {
+    var x2 = (x2Part1+Math.sqrt(x2Part2 - x2Part4))/x2Part3;
+  }
+   
+  else if (aLensSurface.R == 0)
+  {
+    text("R cannot be 0",aLensSurface.x, aLensSurface.y);
+     
+  }
+   
+  var y2 = m*x2 + b;
+   
+  // reassign
+  aRay.x = x2;
+  aRay.y = y2;
+}
+
  
 var xbndry = function(aRay, aLens, iscoming)  // cross(x) boundary(bndry)  formerly tb1 and tb2
 {
@@ -473,8 +473,6 @@ var xbndry = function(aRay, aLens, iscoming)  // cross(x) boundary(bndry)  forme
  
  }
  
-
-
 var myLine = function(xa, xb, ya, yb, aColor)
 {
  var slope = (yb-ya)/(xb-xa);
@@ -492,19 +490,28 @@ var myLine = function(xa, xb, ya, yb, aColor)
 
 var traceRay = function(aRay, aLens, aColor=color(0))
 {
+// if(aRay.go)
+ //{
  var xa = aRay.x;
  var ya = aRay.y;
  
  tl82bndry(aRay,aLens.S1);
  
+ //if (Math.abs(aRay.y)>Math.abs(aLens.S1.D/2))
+ //{
+ //  aRay.go = false;
+ //}
+ 
  var xb = aRay.x;
  var yb = aRay.y;
  
+
  //console.log("xa",xa,"ya",ya,"xb",xb,"yb", yb);
  
  //create line
  //myLine(xa,xb,ya,yb,aColor);
  stroke(aColor);
+ strokeWeight(1);
  line(xa*sF,ya*sF+height/2,xb*sF,yb*sF+height/2);
  
  xbndry(aRay,aLens, true);
@@ -519,7 +526,7 @@ var traceRay = function(aRay, aLens, aColor=color(0))
  line(xb*sF,yb*sF+height/2,xc*sF,yc*sF+height/2);
  
  xbndry(aRay,aLens, false);
- 
+ //}
  }
  
 var traceRay2Det = function(aRay, aFlatSurface, aColor = color(0))
@@ -529,16 +536,11 @@ var traceRay2Det = function(aRay, aFlatSurface, aColor = color(0))
    tl82det(aRay, aFlatSurface);
    var xb = aRay.x;
    var yb = aRay.y;
-   var slope = (yb-ya)/(xb-xa);
-   var icept = yb-slope*xb;
-   var myRayY = [];
-   var myRayX = [];
-   for (var j = 0; j < (xb-xa)*sF; j++)
-   {
-      myRayX[j] = xa*sF + j;
-      myRayY[j] = slope*myRayX[j]+icept*sF;
-      set(myRayX[j], myRayY[j]+height/2, aColor);
-   }
+   //myLine(xa,xb,ya,yb,aColor);
+   stroke(aColor);
+   strokeWeight(1);
+   line(xa*sF,ya*sF+height/2,xb*sF,yb*sF+height/2);
+   
 }
  
 var colorName2RGB = function(colorname)
@@ -566,7 +568,6 @@ var Source = function(x, y, lambda, raycolor)
   this.lambda = lambda;
   this.color = colorName2RGB(raycolor);
   this.rays = [];
-
 }
 
 Source.prototype.addRays = function(angleRad, deltaAngle)
@@ -590,33 +591,28 @@ Source.prototype.changeRays = function(angleRad, deltaAngle)
   angleRad -= deltaAngle;
   }
 }
-  
-
-Source.prototype.removeRays = function()
-{
-  for (var j = 0; j < 7; j++)
-  {
-    this.rays.pop();
-  }
-}
 
 Source.prototype.traceRays = function()
 {
+  
+
   for (var j = 0; j < 7; j++)
   {
-    
     if (L1Check)
     {
+    //console.log("in traceRays L1Ch");
     traceRay(this.rays[j], L1, this.color);//this.color);
     }
     
     if (L2Check)
     {
+    //console.log("in traceRays L2Ch");
     traceRay(this.rays[j], L2, this.color);
     }
     
     if (L3Check)
     {
+    //console.log("in traceRays L3Ch");
     traceRay(this.rays[j], L3, this.color);
     }
     
@@ -645,60 +641,263 @@ var lensParameters = function(aLens, aSource)
     
 }
 
-var rayBundleAngles = function(L1, L2, L3, Source, L1data, L2data, L3data)
+
+var rayBundleAngles1 = function(L1, Source, L1data)
 {
   // Aperture 1
+  var stopRad = L1.S1.D*0.5*caF;
   var adj = L1.S1.position + L1data.h1; //adj stands for adjacent, meaning adjacent side of a triangle
-  var oppUp = L1.S1.D*0.8/2 - Source.y;  // opp stands for opposite, meaning the opposite side of a triangle
-  var upAngle = Math.atan(oppUp/adj);
-  var oppDown = L1.S1.D*0.8/2 + Source.y;
-  var downAngle = Math.atan(oppDown/adj);
+  var oppUp = stopRad - Source.y;  // opp stands for opposite, meaning the opposite side of a triangle
+  var upAngle = Math.atan(Math.abs(oppUp/adj));
+  var oppDown = stopRad + Source.y;
+  var downAngle = Math.atan(Math.abs(oppDown/adj));
   
-  //console.log("adj", adj, "oppUp", oppUp, "upAngle", upAngle, "oppDown", oppDown, "downAngle", downAngle, "L1.S1.D", L1.S1.D, "Source.y", Source.y);
+  if (Math.abs(Source.y) > stopRad && Source.y > 0 )
+  {
+    upAngle = -upAngle;
+    downAngle = -downAngle;
+  }
+  else if (Math.abs(Source.y) > stopRad && Source.y < 0 )
+  {}
+  else
+  {
+    downAngle = -downAngle;
+  }
+  
+  var angleDelta = (upAngle-downAngle)/6;
+  
+  //var angleDelta = (upAngle+downAngle)/6;
+  return {
+    angleBot: downAngle,// downAngle,
+    angleTop: upAngle,// upAngle,
+    angleDelta: angleDelta,
+  }
+}
+
+var rayBundleAngles2 = function(L1, L2, Source, L1data, L2data)
+{
+  // Aperture 1
+  var stopRad = L1.S1.D*0.5*caF;
+  var adj = L1.S1.position + L1data.h1; //adj stands for adjacent, meaning adjacent side of a triangle
+  var oppUp = stopRad - Source.y;  // opp stands for opposite, meaning the opposite side of a triangle
+  var upAngle = Math.atan(Math.abs(oppUp/adj));
+  var oppDown = stopRad + Source.y;
+  var downAngle = Math.atan(Math.abs(oppDown/adj));
+  
+  if (Math.abs(Source.y) > stopRad && Source.y > 0 )
+  {
+    upAngle = -upAngle;
+    downAngle = -downAngle;
+  }
+  else if (Math.abs(Source.y) > stopRad && Source.y < 0 )
+  {}
+  else
+  {
+    downAngle = -downAngle;
+  }
+  
+ //console.log("adj", adj, "oppUp", oppUp, "upAngle", upAngle, "oppDown", oppDown, "downAngle", downAngle, "L1.S1.D", L1.S1.D, "Source.y", Source.y);
   
   // Find Entrance Aperture due to L2
   var so = L2.S1.position - L1.S2.position - L1data.h2 + L2data.h1; // relative to h2 (this is backwards on purpose)
   var si = 1/((1/L1data.focalLength)-(1/so)); // relative to h1 (this is backwards on purpose)
-  var entrDia2 = L2.S1.D*Math.abs(si/so); // the new diameter will not depend on the sign of the magnification so abs value is taken.
-  var entAp2Pos = L1.S1.position + L1data.h1-si; // this should give the xpos of the Entrance aperture
-  var oppUp2 = entrDia2*0.8/2 - Source.y; // this might be switched with oppDown2!!!!!LOOK INTO THIS
-  var upAngle2 = Math.atan(oppUp2/entAp2Pos);
-  var oppDown2 = entrDia2*0.8/2 + Source.y;
-  var downAngle2 = Math.atan(oppDown2/entAp2Pos);
+  var Mag0 = Math.abs(si/so);
+  var adj2 = L1.S1.position + L1data.h1 - si; // this should give the distance from Point source to aperture
+  var stopRad2 = L2.S1.D*0.5*caF*Mag0;
+  if(adj2 > 0)
+  {
+    var oppUp2 = stopRad2 - Source.y;
+    var oppDown2 = stopRad2 + Source.y;
+  }
+  else if (adj2 < 0)
+  {
+    var oppUp2 = stopRad2 + Source.y;
+    var oppDown2 = stopRad2 - Source.y;
+  }
+    var upAngle2 = Math.atan(Math.abs(oppUp2/adj2));
+    var downAngle2 = Math.atan(Math.abs(oppDown2/adj2));
+    
+  if ((Math.abs(Source.y) > stopRad2 && Source.y > 0 && adj2 > 0) || (Math.abs(Source.y) > stopRad2 && Source.y < 0 && adj2 < 0))
+  {
+    upAngle2 = -upAngle2;
+    downAngle2 = -downAngle2;
+  }
+  else if ((Math.abs(Source.y) > stopRad2 && Source.y > 0 && adj2 < 0) || (Math.abs(Source.y) > stopRad2 && Source.y < 0 && adj2 > 0))
+  {}
+  else
+  {
+    downAngle2 = -downAngle2;
+  }
+    
+  //console.log("so", so, "si", si, "entrDia2", entrDia2, "adj2", adj2, "oppUp2", oppUp2, "upAngle2", upAngle2, "oppDown2", oppDown2, "downAngle2", downAngle2);
   
-  //console.log("so", so, "si", si, "entrDia2", entrDia2, "entAp2Pos", entAp2Pos, "oppUp2", oppUp2, "upAngle2", upAngle2, "oppDown2", oppDown2, "downAngle2", downAngle2);
+  
+  
+  var upAngles = [upAngle, upAngle2];//.filter(function(a){return a >= 0});;
+  var downAngles = [downAngle, downAngle2];//.filter(function(a){return a >= 0});;
+  //console.log("upAnglesb4", [upAngle, upAngle2, -1], "downAnglesb4", [downAngle, downAngle2, -1]);
+  //console.log("upAngles", upAngles, "downAngles", downAngles);
+  var angleTop = Math.min.apply(Math, upAngles);
+  var angleBot = Math.max.apply(Math, downAngles);
+  var angleDelta = (angleTop-angleBot)/6;
+  
+  //var angleDelta = (upAngle+downAngle)/6;
+  return {
+    angleBot: angleBot,// downAngle,
+    angleTop: angleTop,// upAngle,
+    angleDelta: angleDelta,
+  }
+}
+
+var rayBundleAngles3 = function(L1, L2, L3, Source, L1data, L2data, L3data)
+{
+  // Aperture 1
+  var stopRad = L1.S1.D*0.5*caF;
+  var adj = L1.S1.position + L1data.h1; //adj stands for adjacent, meaning adjacent side of a triangle
+  var oppUp = stopRad - Source.y;  // opp stands for opposite, meaning the opposite side of a triangle
+  var upAngle = Math.atan(Math.abs(oppUp/adj));
+  var oppDown = stopRad + Source.y;
+  var downAngle = Math.atan(Math.abs(oppDown/adj));
+  
+  if (Math.abs(Source.y) > stopRad && Source.y > 0 )
+  {
+    upAngle = -upAngle;
+    downAngle = -downAngle;
+  }
+  else if (Math.abs(Source.y) > stopRad && Source.y < 0 )
+  {}
+  else
+  {
+    downAngle = -downAngle;
+  }
+  
+ //console.log("adj", adj, "oppUp", oppUp, "upAngle", upAngle, "oppDown", oppDown, "downAngle", downAngle, "L1.S1.D", L1.S1.D, "Source.y", Source.y);
+  
+  // Find Entrance Aperture due to L2
+  var so = L2.S1.position - L1.S2.position - L1data.h2 + L2data.h1; // relative to h2 (this is backwards on purpose)
+  var si = 1/((1/L1data.focalLength)-(1/so)); // relative to h1 (this is backwards on purpose)
+  var Mag0 = Math.abs(si/so);
+  var adj2 = L1.S1.position + L1data.h1 - si; // this should give the distance from Point source to aperture
+  var stopRad2 = L2.S1.D*0.5*caF*Mag0;
+  if(adj2 > 0)
+  {
+    var oppUp2 = stopRad2 - Source.y;
+    var oppDown2 = stopRad2 + Source.y;
+  }
+  else if (adj2 < 0)
+  {
+    var oppUp2 = stopRad2 + Source.y;
+    var oppDown2 = stopRad2 - Source.y;
+  }
+    var upAngle2 = Math.atan(Math.abs(oppUp2/adj2));
+    var downAngle2 = Math.atan(Math.abs(oppDown2/adj2));
+    
+  if ((Math.abs(Source.y) > stopRad2 && Source.y > 0 && adj2 > 0) || (Math.abs(Source.y) > stopRad2 && Source.y < 0 && adj2 < 0))
+  {
+    upAngle2 = -upAngle2;
+    downAngle2 = -downAngle2;
+  }
+  else if ((Math.abs(Source.y) > stopRad2 && Source.y > 0 && adj2 < 0) || (Math.abs(Source.y) > stopRad2 && Source.y < 0 && adj2 > 0))
+  {}
+  else
+  {
+    downAngle2 = -downAngle2;
+  }
+    
+  //console.log("so", so, "si", si, "entrDia2", entrDia2, "adj2", adj2, "oppUp2", oppUp2, "upAngle2", upAngle2, "oppDown2", oppDown2, "downAngle2", downAngle2);
   
   // Find Entrance Aperture due to L3
-  // first find composite lens
-  var focComposite = 1/(1/L1data.focalLength + 1/L2data.focalLength - so/(L1data.focalLength*L2data.focalLength));
-  var h1Composite = focComposite*so/L2data.focalLength;
-  var h2Composite = -focComposite*so/L1data.focalLength;
+  var so1 = (L3.S1.position + L3data.h1)-(L2.S2.position + L2data.h2);
+  var si1 = 1/((1/L2data.focalLength)-(1/so1));
+  var Mag1 = Math.abs(si1/so1);
+  var Apos = (L2.S1.position + L2data.h1)-si1;
+  var so2 = Apos - (L1.S2.position + L1data.h2);
+  var si2 = 1/((1/L1data.focalLength)-(1/so2));
+  var Mag2 = Math.abs(si2/so2);
+  var adj3 = (L1data.h1 + L1.S1.position)-(si2);
+  var stopRad3 = L3.S1.D*0.5*caF*Mag1*Mag2;
+  if(adj3 > 0)
+  {
+  var oppUp3 = stopRad3 - Source.y;
+  var oppDown3 = stopRad3 + Source.y;
+  }
+  else if(adj3 < 0)
+  {
+  var oppUp3 = stopRad3 + Source.y;
+  var oppDown3 = stopRad3 - Source.y;
+  }
   
-  //console.log("focComposite", focComposite, "h1Composite", h1Composite, "h2Composite", h2Composite);
+  var upAngle3 = Math.atan(Math.abs(oppUp3/adj3));
+  var downAngle3 = Math.atan(Math.abs(oppDown3/adj3));
   
-  // next solve for the Diameter and the aperture position
-  var soComposite = L3.S1.position+L3data.h1-L2.S2.position-L2data.h2-h2Composite;
-  var siComposite = 1/((1/focComposite)-(1/soComposite));
-  var entrDia3 = L3.S1.D*Math.abs(siComposite/soComposite); // this will give the diameter of the aperture.
-  var entAp3Pos = L1.S1.position + L1data.h1+h1Composite-siComposite;  // this should give the xpos of the Entrance Aperture
-  var oppUp3 = entrDia3*0.8/2 - Source.y;
-  var upAngle3 = Math.atan(oppUp3/entAp3Pos);
-  var oppDown3 = entrDia3*0.8/2 + Source.y;
-  var downAngle3 = Math.atan(oppDown3/entAp3Pos);
-  
+  if ((Math.abs(Source.y) > stopRad3 && Source.y > 0 && adj3 > 0) || (Math.abs(Source.y) > stopRad3 && Source.y < 0 && adj3 < 0))
+  {
+    upAngle3 = -upAngle3;
+    downAngle3 = -downAngle3;
+  }
+  else if ((Math.abs(Source.y) > stopRad3 && Source.y > 0 && adj3 < 0) || (Math.abs(Source.y) > stopRad3 && Source.y < 0 && adj3 > 0))
+  {}
+  else
+  {
+    downAngle3 = -downAngle3;
+  }
+  //console.log("si",si, "oppUp2", oppUp2, "adj2", adj2, "oppDown2", oppDown2,"upAngle2", upAngle2, "downAngle2", downAngle2, "Sourcey", Source.y);
+
   //console.log("soComposite", soComposite, "siComposite", siComposite, "entrDia3", entrDia3, "entAp3Pos", entAp3Pos, "oppUp3", oppUp3, "upAngle3", upAngle3, "oppDown3", oppDown3, "downAngle3", downAngle3);
+  //note change -1 back to upAngle3 and downAngle3 respectively
   
-  var upAngles = [upAngle, upAngle2, upAngle3].filter(function(a){return a >= 0});  //select positive values only
-  var downAngles = [downAngle, downAngle2, downAngle3].filter(function(a){return a >= 0}); // select positive values only
+  var upAngles = [upAngle, upAngle2, upAngle3];//.filter(function(a){return a >= 0});;
+  var downAngles = [downAngle, downAngle2, downAngle3];//.filter(function(a){return a >= 0});;
+  //console.log("upAnglesb4", [upAngle, upAngle2, -1], "downAnglesb4", [downAngle, downAngle2, -1]);
+  //console.log("upAngles", upAngles, "downAngles", downAngles);
   var angleTop = Math.min.apply(Math, upAngles);
-  var angleBot = Math.min.apply(Math, downAngles);
-  var angleDelta = (angleTop+angleBot)/6;
+  var angleBot = Math.max.apply(Math, downAngles);
+  var angleDelta = (angleTop-angleBot)/6;
+  
+  //var angleDelta = (upAngle+downAngle)/6;
   return {
-    angleBot: angleBot,
-    angleTop: angleTop,
+    angleBot: angleBot,// downAngle,
+    angleTop: angleTop,// upAngle,
     angleDelta: angleDelta,
   }
   //console.log("upAngles", upAngles, "downAngles", downAngles, "angleTop", angleTop, "angleBot", angleBot, "angleDelta", angleDelta);
+  //console.log(angleTop, "angleBot", angleBot, "angleDelta", angleDelta);
+}
+
+var rayBundleAngles = function (L1, L2, L3, Source, L1data, L2data, L3data)
+{
+  var temp = rayBundleAngles1(L3, Source, L3data);
+  if (L1Check && L2Check && L3Check)
+  {
+    temp = rayBundleAngles3(L1, L2, L3, Source, L1data, L2data, L3data);
+  }
+  else if(L1Check && L2Check)
+  {
+    temp = rayBundleAngles2(L1, L2, Source, L1data, L2data);
+  }
+  else if(L1Check && L3Check)
+  {
+    temp = rayBundleAngles2(L1, L3, Source, L1data, L3data);
+  }
+  else if(L2Check && L3Check)
+  {
+    temp = rayBundleAngles2(L2, L3, Source, L2data, L3data);
+  }
+  else if(L1Check)
+  {
+    temp = rayBundleAngles1(L1, Source, L1data);
+  }
+  else if(L2Check)
+  {
+    temp = rayBundleAngles1(L2, Source, L2data);
+  }
+  else if(L3Check)
+  {
+    temp = rayBundleAngles1(L3, Source, L3data);
+
+  }
+  //console.log(temp.angleBot, temp.angleTop, temp.angleDelta);
+  return {angleBot: temp.angleBot, angleTop: temp.angleTop, angleDelta: temp.angleDelta};
 }
 
 var L1R1 =  parseFloat(document.getElementById("lens1R1").value);
@@ -742,13 +941,13 @@ var D1 = new surfaceFlat(50, DetXpos);
 
 background(64, 224, 208);
 
-if (L1Check == true){
+if (L1Check){
   L1.display();
 }
-if (L2Check == true){
+if (L2Check){
   L2.display();
 }
-if (L3Check == true){
+if (L3Check){
   L3.display();
 }
 
@@ -778,9 +977,6 @@ var Source1 = new Source(Sr1X,Sr1Y,Sr1Lam,Sr1Color);
 var Source2 = new Source(Sr2X,Sr2Y,Sr2Lam,Sr2Color);
 var Source3 = new Source(Sr3X,Sr3Y,Sr3Lam,Sr3Color);
 
-var L1info = document.getElementById("lens1Info");
-var L2info = document.getElementById("lens2Info");
-var L3info = document.getElementById("lens3Info");
 
 //// calculate lens parameters, focal length, etc.
 
@@ -796,6 +992,10 @@ var L1dataSr3 = lensParameters(L1,Source3);
 var L2dataSr3 = lensParameters(L2,Source3);
 var L3dataSr3 = lensParameters(L3,Source3);
 
+var L1info = document.getElementById("lens1Info");
+var L2info = document.getElementById("lens2Info");
+var L3info = document.getElementById("lens3Info");
+
 L1info.innerHTML="Lens 1 &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L1dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L1dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L1dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L1dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L1dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L1dataSr1.h2.toFixed(2).toString();
 L2info.innerHTML="Lens 2  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L2dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L2dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L2dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L2dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L2dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L2dataSr1.h2.toFixed(2).toString();
 L3info.innerHTML="Lens 3  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L3dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L3dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L3dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L3dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L3dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L3dataSr1.h2.toFixed(2).toString();
@@ -809,6 +1009,11 @@ var rayBundleAnglesSr3 = rayBundleAngles(L1, L2, L3, Source3, L1dataSr3, L2dataS
 Source1.addRays(rayBundleAnglesSr1.angleTop, rayBundleAnglesSr1.angleDelta);
 Source2.addRays(rayBundleAnglesSr2.angleTop, rayBundleAnglesSr2.angleDelta);
 Source3.addRays(rayBundleAnglesSr3.angleTop, rayBundleAnglesSr3.angleDelta);
+
+
+/*Source1.addRays(0.119, 0.04);
+Source2.addRays(0.119, 0.04);
+Source3.addRays(0.119, 0.04);*/
 
 if (Sr1Check)
 {
@@ -858,6 +1063,8 @@ L3.S2.D = parseFloat(document.getElementById("lens3Dia").value);
 L3.glass = document.getElementById("lens3Glass").value;
 L3Check = document.getElementById("lens3Check").checked;
 
+D1.position = parseFloat(document.getElementById("det1x").value);
+
 background(64, 224, 208);
 
 if (L1Check){
@@ -902,44 +1109,48 @@ L1dataSr2 = lensParameters(L1,Source2);
 L2dataSr2 = lensParameters(L2,Source2);
 L3dataSr2 = lensParameters(L3,Source2);
 
-L1dataSr2 = lensParameters(L1,Source3);
-L2dataSr2 = lensParameters(L2,Source3);
-L3dataSr2 = lensParameters(L3,Source3);
+L1dataSr3 = lensParameters(L1,Source3);
+L2dataSr3 = lensParameters(L2,Source3);
+L3dataSr3 = lensParameters(L3,Source3);
 
 L1info.innerHTML="Lens 1 &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L1dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L1dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L1dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L1dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L1dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L1dataSr1.h2.toFixed(2).toString();
 L2info.innerHTML="Lens 2  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L2dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L2dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L2dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L2dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L2dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L2dataSr1.h2.toFixed(2).toString();
 L3info.innerHTML="Lens 3  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L3dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L3dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L3dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L3dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L3dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L3dataSr1.h2.toFixed(2).toString();
- 
+
 //console.log(Sr1Check, Sr2Check, Sr3Check);
 
 if (Sr1Check)
 {
-  //Source1.removeRays();
   // SOMETHING MAY NEED TO CHANGE WITH RAYBUNDLEANGLES SO I'M NOT WRITING OVER ITSELF???
   rayBundleAnglesSr1 = rayBundleAngles(L1, L2, L3, Source1, L1dataSr1, L2dataSr1, L3dataSr1);
   //var temp = rayBundleAngles(L1, L2, L3, Source1, L1dataSr1, L2dataSr1, L3dataSr1);
   //console.log("rbaBot",rayBundleAnglesSr1.angleBot, "rbaTop", rayBundleAnglesSr1.angleTop, "rbaDelta",rayBundleAnglesSr1.angleDelta);
   Source1.changeRays(rayBundleAnglesSr1.angleTop, rayBundleAnglesSr1.angleDelta);
+  //Source1.changeRays(0.119, 0.04);
   //var lengo = Source1.rays.length;
   //console.log(Source1.x, Source1.y);
+  //console.log("#Sr1Rays",Source1.rays.length);
   Source1.traceRays();
 }
 
 if (Sr2Check)
 {
-  //Source2.removeRays();
   rayBundleAnglesSr2 = rayBundleAngles(L1, L2, L3, Source2, L1dataSr2, L2dataSr2, L3dataSr2);
   Source2.changeRays(rayBundleAnglesSr2.angleTop, rayBundleAnglesSr2.angleDelta);
   //console.log(Source2.x, Source2.y);
+  //Source2.changeRays(0.119, 0.04);
+  //console.log("#Sr2Rays",Source2.rays.length);
   Source2.traceRays();
 }
 
 if (Sr3Check)
 {
-  //Source3.removeRays();
+
   rayBundleAnglesSr3 = rayBundleAngles(L1, L2, L3, Source3, L1dataSr3, L2dataSr3, L3dataSr3);
   Source3.changeRays(rayBundleAnglesSr3.angleTop, rayBundleAnglesSr3.angleDelta);
   //console.log(Source3.x, Source3.y);
+  //Source3.changeRays(0.119, 0.04);
+  //console.log("#Sr3Rays",Source3.rays.length);
   Source3.traceRays();
 }
   
@@ -951,15 +1162,15 @@ document.getElementById("sourceTable").addEventListener("change", upDateCanvasVi
 
 mousePressed = function()
 {
-  if (document.getElementById("lens1Check").checked === true){
+  if (L1Check){
     //console.log("here?");
     L1.handleClick(mouseX, mouseY);
 }
-  if (document.getElementById("lens2Check").checked === true){
+  if (L2Check){
     L2.S1.position = parseFloat(document.getElementById("lens2Xpos").value);
     L2.handleClick(mouseX, mouseY);
 }
-  if (document.getElementById("lens3Check").checked === true){
+  if (L3Check){
     L3.S1.position = parseFloat(document.getElementById("lens3Xpos").value);
     L3.handleClick(mouseX, mouseY);
 }
@@ -967,18 +1178,18 @@ mousePressed = function()
 
 mouseDragged = function()
 {
-  if (document.getElementById("lens1Check").checked === true){
+  if (L1Check){
     
     L1.handleDrag(mouseX, mouseY);
     document.getElementById("lens1Xpos").value = L1.S1.position.toFixed(2);
     upDateCanvasView();
 }
-  if (document.getElementById("lens2Check").checked === true){
+  if (L2Check){
     L2.handleDrag(mouseX, mouseY);
     document.getElementById("lens2Xpos").value = L2.S1.position.toFixed(2);
     upDateCanvasView();
 }
-  if (document.getElementById("lens3Check").checked === true){
+  if (L3Check){
     L3.handleDrag(mouseX, mouseY);
     document.getElementById("lens3Xpos").value = L3.S1.position.toFixed(2);
     upDateCanvasView();
@@ -987,15 +1198,15 @@ mouseDragged = function()
 
 mouseReleased = function()
 {
-  if (document.getElementById("lens1Check").checked === true){
+  if (L1Check){
     L1.stopDrag();
   
 }
-  if (document.getElementById("lens2Check").checked === true){
+  if (L2Check){
     L2.stopDrag();
   
 }
-  if (document.getElementById("lens3Check").checked === true){
+  if (L3Check){
     L3.stopDrag();
   
 }
