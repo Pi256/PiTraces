@@ -52,6 +52,42 @@ MathJax.Hub.Config({
   #lensTable tr:nth-child(even){background-color: #f2f2f2;}
   #sourceTable tr:nth-child(even){background-color: #f2f2f2;}
   
+  /* Style the tab */
+.tab, .tab2, .tab3 {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button, .tab2 button, .tab3 button {
+  background-color: #ffffff;
+  float: left;
+  border: 2px;
+  outline: 2px solid black;
+  cursor: pointer;
+  padding: 5px 5px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover, .tab2 button:hover, .tab3 button:hover {
+  background-color: #C8C8FF;
+}
+
+/* Create an active/current tablink class */
+.tab button.active, .tab2 button.active, .tab3 button.active {
+  background-color: #D7D7FF;
+}
+
+/* Style the tab content */
+.tabcontent, .tab2content, .tab3content {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+  
 </style>
 </head>
 
@@ -90,7 +126,7 @@ MathJax.Hub.Config({
             <td><input class = "inputs" id="lens2R1" type="text" size = "8" value = "-20"></td>
             <td><input class = "inputs" id="lens2R2" type="text" size = "8" value = "-75"></td>
             <td><input class = "inputs" id="lens2CT" type="text" size = "8" value = "5"></td>
-            <td><input class = "inputs" id="lens2Dia" type="text" size = "8" value = "25"></td>
+            <td><input class = "inputs" id="lens2Dia" type="text" size = "8" value = "12.5"></td>
             <td><input class = "inputs" id="lens2Xpos" type="text" size = "8" value = "70"></td>
             <td><select class = "inputs2" align = "center" id = "lens2Glass">
                   <option value="BK7" >BK7</option>
@@ -128,7 +164,10 @@ MathJax.Hub.Config({
           </tr>
           <tr>
             <td><input type = "checkbox" id = "source1Check" name = "source1Check" value ="source1Active" checked><label for = "source1Check">1</label></td>
-            <td><input class = "inputs" id="ps1x" type="text" size = "8" value = "0"></td>
+            <td><select class = "inputs" align = "center" width = "8" id = "ps1x">
+                  <option value="-Infinity" >-Infinity</option>
+                  <option value="0" selected>0</option>
+                </select></td>
             <td><input class = "inputs" id="ps1y" type="text" size = "8" value = "0"></td>
             <td><input class = "inputs" id="lambda1" type="text" size = "8" value = "1.064"></td>
             <td><select class = "inputs2" align = "center" id = "source1TraceColor">
@@ -139,7 +178,10 @@ MathJax.Hub.Config({
           </tr>
           <tr>
             <td><input type = "checkbox" id = "source2Check" name = "source2Check" value ="source2Active" checked><label for = "source2Check">2</label></td>
-            <td><input class = "inputs" id="ps2x" type="text" size = "8" value = "0"></td>
+            <td><select class = "inputs" align = "center" width = "8" id = "ps2x">
+                  <option value="-Infinity" >-Infinity</option>
+                  <option value="0" selected>0</option>
+                </select></td>
             <td><input class = "inputs" id="ps2y" type="text" size = "8" value = "2"></td>
             <td><input class = "inputs" id="lambda2" type="text" size = "8" value = "0.532"></td>
             <td><select class = "inputs2" align = "center" id = "source2TraceColor">
@@ -150,7 +192,10 @@ MathJax.Hub.Config({
           </tr>
           <tr>
             <td><input type = "checkbox" id = "source3Check" name = "source3Check" value ="source3Active" checked><label for = "source3Check">3</label></td>
-            <td><input class = "inputs" id="ps3x" type="text" size = "8" value = "0"></td>
+            <td><select class = "inputs" align = "center" width = "8" id = "ps3x">
+                  <option value="-Infinity" >-Infinity</option>
+                  <option value="0" selected>0</option>
+                </select></td>
             <td><input class = "inputs" id="ps3y" type="text" size = "8" value = "4"></td>
             <td><input class = "inputs" id="lambda3" type="text" size = "8" value = "0.405"></td>
             <td><select class = "inputs2" align = "center" id = "source3TraceColor">
@@ -183,17 +228,133 @@ MathJax.Hub.Config({
     </p>
     </div>
     
-    <div style = "margin-right:5px; padding:none; float:left; background-color:#646464;">
-    <p id = "lens1Info" style = "font-size:1em;  margin:4px; color:#dddddd"></p>
+    <div style = "float:left; width:200px; margin-right:5px; padding:none;  border:none; background-color:#cfd0d1;">
+      <p style = "margin-top:2px; margin-bottom:2px; text-align:center">Lens 1 Info</p>
+    <div class = "tab" id = "L1InfoTab" >
+      <button class = "tablinks" id = "tabLam1" style = "margin:none; padding:none; border:none" onclick = "chooseInfo1(event,'lam1L1info')">1.064 &mu;m</button>
+      <button class = "tablinks" id = "tabLam2" style = "margin:none; padding:none; border:none " onclick = "chooseInfo1(event,'lam2L1info')">0.532 &mu;m</button>
+      <button class = "tablinks" id = "tabLam3" style = "margin:none; padding:none; border:none" onclick = "chooseInfo1(event,'lam3L1info')">0.405 &mu;m</button>
     </div>
     
-    <div style = "margin-right:5px; float:left; background-color:#646464;">
-    <p id = "lens2Info" style = "font-size:1em;  margin:4px;  color:#dddddd"></p>
+    
+    <div id = "lam1L1info" class = "tabcontent" style = "width:174px; margin-right:none; padding:none;  background-color:#D7D7FF;">
+    <p style = "font-size:1em;  margin:4px; color:#dddddd"></p>
+    </div>
+    <div id = "lam2L1info" class = "tabcontent" style = "width:174px; margin-right:none; padding:none; background-color:#D7D7FF;">
+    <p  style = "font-size:1em;  margin:4px; color:#dddddd"></p>
+    </div>
+    <div id = "lam3L1info" class = "tabcontent" style = "width:174px; margin-right:none; padding:none; background-color:#D7D7FF;">
+    <p  style = "font-size:1em;  margin:4px; color:#dddddd"></p>
+    </div>
+    </div>
+<!----------------------------Tab info lens 2--------------------------------------------------->
+    <div style = "float:left; width:200px; margin-right:5px; padding:none;  border:none; background-color:#cfd0d1;">
+      <p style = "margin-top:2px; margin-bottom:2px; text-align:center">Lens 2 Info</p>
+    <div class = "tab2" id = "L2InfoTab" >
+      <button class = "tab2links2" id = "tab2Lam1" style = "margin:none; padding:none; border:none" onclick = "chooseInfo2(event,'lam1L2info')">1.064 &mu;m</button>
+      <button class = "tab2links2" id = "tab2Lam2" style = "margin:none; padding:none; border:none " onclick = "chooseInfo2(event,'lam2L2info')">0.532 &mu;m</button>
+      <button class = "tab2links2" id = "tab2Lam3" style = "margin:none; padding:none; border:none" onclick = "chooseInfo2(event,'lam3L2info')">0.405 &mu;m</button>
     </div>
     
-    <div style = "float:left; background-color:#646464;">
-    <p id = "lens3Info" style = "font-size:1em;  margin:4px;  color:#dddddd"></p>
+    <div id = "lam1L2info" class = "tab2content" style = "width:174px; margin-right:none; padding:none;  background-color:#D7D7FF;">
+    <p style = "font-size:1em;  margin:4px; color:#dddddd"></p>
     </div>
+    <div id = "lam2L2info" class = "tab2content" style = "width:174px; margin-right:none; padding:none; background-color:#D7D7FF;">
+    <p  style = "font-size:1em;  margin:4px; color:#dddddd"></p>
+    </div>
+    <div id = "lam3L2info" class = "tab2content" style = "width:174px; margin-right:none; padding:none; background-color:#D7D7FF;">
+    <p  style = "font-size:1em;  margin:4px; color:#dddddd"></p>
+    </div>
+    </div>
+    
+<!----------------------------Tab info lens 3--------------------------------------------------->
+    <div style = "float:left; width:200px; margin:none; padding:none;  border:none; background-color:#cfd0d1;">
+      <p style = "margin-top:2px; margin-bottom:2px; text-align:center">Lens 3 Info</p>
+    <div class = "tab3" id = "L3InfoTab" >
+      <button class = "tab3links3" id = "tab3Lam1" style = "margin:none; padding:none; border:none" onclick = "chooseInfo3(event,'lam1L3info')">1.064 &mu;m</button>
+      <button class = "tab3links3" id = "tab3Lam2" style = "margin:none; padding:none; border:none " onclick = "chooseInfo3(event,'lam2L3info')">0.532 &mu;m</button>
+      <button class = "tab3links3" id = "tab3Lam3" style = "margin:none; padding:none; border:none" onclick = "chooseInfo3(event,'lam3L3info')">0.405 &mu;m</button>
+    </div>
+    
+    <div id = "lam1L3info" class = "tab3content" style = "width:174px; margin-right:none; padding:none;  background-color:#D7D7FF;">
+    <p style = "font-size:1em;  margin:4px; color:#dddddd"></p>
+    </div>
+    <div id = "lam2L3info" class = "tab3content" style = "width:174px; margin-right:none; padding:none; background-color:#D7D7FF;">
+    <p  style = "font-size:1em;  margin:4px; color:#dddddd"></p>
+    </div>
+    <div id = "lam3L3info" class = "tab3content" style = "width:174px; margin-right:none; padding:none; background-color:#D7D7FF;">
+    <p  style = "font-size:1em;  margin:4px; color:#dddddd"></p>
+    </div>
+    </div>
+    
+
+ <script>
+ function chooseInfo1(evt, lamInfo) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(lamInfo).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+ 
+ function chooseInfo2(evt, lamInfo) {
+  // Declare all variables
+  var i, tab2content, tab2links2;
+
+  // Get all elements with class="tabcontent" and hide them
+  tab2content = document.getElementsByClassName("tab2content");
+  for (i = 0; i < tab2content.length; i++) {
+    tab2content[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tab2links2 = document.getElementsByClassName("tab2links2");
+  for (i = 0; i < tab2links2.length; i++) {
+    tab2links2[i].className = tab2links2[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(lamInfo).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+
+ 
+ function chooseInfo3(evt, lamInfo) {
+  // Declare all variables
+  var i, tab3content, tab3links3;
+
+  // Get all elements with class="tabcontent" and hide them
+  tab3content = document.getElementsByClassName("tab3content");
+  for (i = 0; i < tab3content.length; i++) {
+    tab3content[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tab3links3 = document.getElementsByClassName("tab3links3");
+  for (i = 0; i < tab3links3.length; i++) {
+    tab3links3[i].className = tab3links3[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(lamInfo).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.6/processing.min.js"></script>
  <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script>
   <!-- Run all the JavaScript stuff -->
  <!-- Include the processing.js library -->
@@ -226,6 +387,29 @@ surfaceFlat.prototype.display = function()
   strokeWeight(1.5);
   line(this.position*sF, -this.D*sF/2+height/2, this.position*sF, this.D*sF/2 + height/2);
 }
+
+surfaceFlat.prototype.handleClick = function(mx, my)
+{
+    if (mx>(this.position*sF-5) && mx < (this.position*sF+5))
+  {
+    //console.log("true")
+    this.drag = true;
+  }
+}
+surfaceFlat.prototype.handleDrag = function(mx, my)
+{
+   if (this.drag)
+ {
+   //console.log(this.S1.position.toFixed(2));
+   this.position += mx/sF - (this.position);
+   
+ }
+}
+surfaceFlat.prototype.stopDrag = function(mx, my)
+{
+  this.drag = false;
+}
+
 
 var surfaceSpherical = function(R, D, position)
 {
@@ -368,6 +552,8 @@ lensSpherical.prototype.stopDrag = function()
 {
     this.drag = false;
 }
+
+
 
 var indexOfRefraction = function(aWavelength, aLens)
 {
@@ -592,6 +778,18 @@ Source.prototype.changeRays = function(angleRad, deltaAngle)
   }
 }
 
+Source.prototype.changeRaysPar = function(rayBundle)
+{
+  for (var j = 0; j < 7; j++)
+  {
+    this.rays[j].x = 0;
+    this.rays[j].y = rayBundle.yTop - j*rayBundle.yDelta;
+    this.rays[j].angle = rayBundle.rayAngle;
+    this.rays[j].wavelength = this.lambda;
+    
+  }
+}
+
 Source.prototype.traceRays = function()
 {
   
@@ -641,6 +839,147 @@ var lensParameters = function(aLens, aSource)
     
 }
 
+
+var rayBundle1 = function(L1, Source, L1data)
+{
+    // Aperture 1
+
+  var stopRad = L1.S1.D*0.5*caF;
+  var adj = L1.S1.position + L1data.h1; //adj stands for adjacent, meaning adjacent side of a triangle
+  var angle = Math.atan(Source.y/adj);
+  var yTop = stopRad + Math.tan(angle)*adj;
+  var yBot = -stopRad +Math.tan(angle)*adj;
+  var yDelta = (yTop-yBot)/6;
+  return {
+    yTop: yTop,
+    yBot: yBot,
+    yDelta: yDelta,
+    rayAngle: -angle,
+  }
+  
+  
+}
+var rayBundle2 = function(L1, L2, Source, L1data, L2data)
+{
+    // Aperture 1
+
+  var stopRad = L1.S1.D*0.5*caF;
+  var adj = L1.S1.position + L1data.h1; //adj stands for adjacent, meaning adjacent side of a triangle
+  var angle = Math.atan(Source.y/adj);  // this will be positive is Source.y is positive and negative if Source.y is negative
+  var yTop1 = stopRad + Math.tan(angle)*adj;
+  var yBot1 = -stopRad +Math.tan(angle)*adj;
+
+    // Aperture 2
+    
+  var so = L2.S1.position - L1.S2.position - L1data.h2 + L2data.h1; // relative to h2 (this is backwards on purpose)
+  var si = 1/((1/L1data.focalLength)-(1/so)); // relative to h1 (this is backwards on purpose)
+  var Mag0 = Math.abs(si/so);
+  var adj2 = L1.S1.position + L1data.h1 - si; // this should give the distance from 0  to aperture
+  var stopRad2 = L2.S1.D*0.5*caF*Mag0;
+  var yTop2 = stopRad2 + Math.tan(angle)*adj2;
+  var yBot2 = -stopRad2 + Math.tan(angle)*adj2
+  
+  var yTops = [yTop1, yTop2];
+  var yBots = [yBot1, yBot2];
+  var yTop = Math.min.apply(Math, yTops);
+  var yBot = Math.max.apply(Math, yBots);
+  var yDelta = (yTop - yBot)/6;
+ 
+  return {
+    yTop: yTop,
+    yBot: yBot,
+    yDelta: yDelta,
+    rayAngle: -angle,
+  }
+  
+  
+}
+
+var rayBundle3 = function(L1, L2, L3, Source, L1data, L2data, L3data)
+{
+    // Aperture 1
+
+  var stopRad = L1.S1.D*0.5*caF;
+  var adj = L1.S1.position + L1data.h1; //adj stands for adjacent, meaning adjacent side of a triangle
+  var angle = Math.atan(Source.y/adj);  // this will be positive is Source.y is positive and negative if Source.y is negative
+  var yTop1 = stopRad + Math.tan(angle)*adj;
+  var yBot1 = -stopRad +Math.tan(angle)*adj;
+
+    // Aperture 2
+    
+  var so = L2.S1.position - L1.S2.position - L1data.h2 + L2data.h1; // relative to h2 (this is backwards on purpose)
+  var si = 1/((1/L1data.focalLength)-(1/so)); // relative to h1 (this is backwards on purpose)
+  var Mag0 = Math.abs(si/so);
+  var adj2 = L1.S1.position + L1data.h1 - si; // this should give the distance from 0  to aperture
+  var stopRad2 = L2.S1.D*0.5*caF*Mag0;
+  var yTop2 = stopRad2 + Math.tan(angle)*adj2;
+  var yBot2 = -stopRad2 + Math.tan(angle)*adj2;
+  
+  var so1 = (L3.S1.position + L3data.h1)-(L2.S2.position + L2data.h2);
+  var si1 = 1/((1/L2data.focalLength)-(1/so1));
+  var Mag1 = Math.abs(si1/so1);
+  var Apos = (L2.S1.position + L2data.h1)-si1;
+  var so2 = Apos - (L1.S2.position + L1data.h2);
+  var si2 = 1/((1/L1data.focalLength)-(1/so2));
+  var Mag2 = Math.abs(si2/so2);
+  var adj3 = (L1data.h1 + L1.S1.position)-(si2);
+  var stopRad3 = L3.S1.D*0.5*caF*Mag1*Mag2;
+  var yTop3 = stopRad3 + Math.tan(angle)*adj3;
+  var yBot3 = -stopRad3 + Math.tan(angle)*adj3;
+  
+ 
+  var yTops = [yTop1, yTop2, yTop3];
+  var yBots = [yBot1, yBot2, yBot3];
+  var yTop = Math.min.apply(Math, yTops);
+  var yBot = Math.max.apply(Math, yBots);
+  var yDelta = (yTop - yBot)/6;
+ 
+  return {
+    yTop: yTop,
+    yBot: yBot,
+    yDelta: yDelta,
+    rayAngle: -angle,
+  }
+}
+
+var rayBundle = function(L1, L2, L3, Source, L1data, L2data, L3data)
+{
+  var temp = rayBundle1(L3, Source, L3data);
+  if (L1Check && L2Check && L3Check)
+  {
+    temp = rayBundle3(L1, L2, L3, Source, L1data, L2data, L3data);
+  }
+  else if(L1Check && L2Check)
+  {
+    temp = rayBundle2(L1, L2, Source, L1data, L2data);
+  }
+  else if(L1Check && L3Check)
+  {
+    temp = rayBundle2(L1, L3, Source, L1data, L3data);
+  }
+  else if(L2Check && L3Check)
+  {
+    temp = rayBundle2(L2, L3, Source, L2data, L3data);
+  }
+  else if(L1Check)
+  {
+    temp = rayBundle1(L1, Source, L1data);
+  }
+  else if(L2Check)
+  {
+    temp = rayBundle1(L2, Source, L2data);
+  }
+  else if(L3Check)
+  {
+    temp = rayBundle1(L3, Source, L3data);
+  }
+    return {
+    yTop: temp.yTop,
+    yBot: temp.yBot,
+    yDelta: temp.yDelta,
+    rayAngle: temp.rayAngle,
+  };
+}
 
 var rayBundleAngles1 = function(L1, Source, L1data)
 {
@@ -939,7 +1278,7 @@ var L3 = new lensSpherical(S5, S6, L3CT,L3Glass);
 var DetXpos = parseFloat(document.getElementById("det1x").value);
 var D1 = new surfaceFlat(50, DetXpos);
 
-background(64, 224, 208);
+background(245, 245, 255);
 
 if (L1Check){
   L1.display();
@@ -996,10 +1335,36 @@ var L1info = document.getElementById("lens1Info");
 var L2info = document.getElementById("lens2Info");
 var L3info = document.getElementById("lens3Info");
 
-L1info.innerHTML="Lens 1 &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L1dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L1dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L1dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L1dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L1dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L1dataSr1.h2.toFixed(2).toString();
-L2info.innerHTML="Lens 2  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L2dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L2dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L2dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L2dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L2dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L2dataSr1.h2.toFixed(2).toString();
-L3info.innerHTML="Lens 3  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L3dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L3dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L3dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L3dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L3dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L3dataSr1.h2.toFixed(2).toString();
 
+var lam1L1info = document.getElementById("lam1L1info");
+var lam2L1info = document.getElementById("lam2L1info");
+var lam3L1info = document.getElementById("lam3L1info");
+
+lam1L1info.innerHTML="<table><tr><td>n = " + L1dataSr1.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L1dataSr1.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L1dataSr1.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L1dataSr1.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L1dataSr1.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L1dataSr1.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam2L1info.innerHTML="<table><tr><td>n = " + L1dataSr2.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L1dataSr2.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L1dataSr2.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L1dataSr2.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L1dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L1dataSr2.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam3L1info.innerHTML="<table><tr><td>n = " + L1dataSr3.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L1dataSr3.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L1dataSr3.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L1dataSr3.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L1dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L1dataSr3.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+var lam1L2info = document.getElementById("lam1L2info");
+var lam2L2info = document.getElementById("lam2L2info");
+var lam3L2info = document.getElementById("lam3L2info");
+
+lam1L2info.innerHTML="<table><tr><td>n = " + L2dataSr1.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L2dataSr1.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L2dataSr1.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L2dataSr1.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L2dataSr1.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L2dataSr1.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam2L2info.innerHTML="<table><tr><td>n = " + L2dataSr2.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L2dataSr2.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L2dataSr2.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L2dataSr2.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L2dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L2dataSr2.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam3L2info.innerHTML="<table><tr><td>n = " + L2dataSr3.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L2dataSr3.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L2dataSr3.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L2dataSr3.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L2dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L2dataSr3.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+var lam1L3info = document.getElementById("lam1L3info");
+var lam2L3info = document.getElementById("lam2L3info");
+var lam3L3info = document.getElementById("lam3L3info");
+
+lam1L3info.innerHTML="<table><tr><td>n = " + L3dataSr1.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L3dataSr1.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L3dataSr1.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L3dataSr1.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L3dataSr1.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L3dataSr1.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam2L3info.innerHTML="<table><tr><td>n = " + L3dataSr2.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L3dataSr2.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L3dataSr2.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L3dataSr2.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L3dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L3dataSr2.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam3L3info.innerHTML="<table><tr><td>n = " + L3dataSr3.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L3dataSr3.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L3dataSr3.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L3dataSr3.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L3dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L3dataSr3.ffl.toFixed(2).toString() + "</td> </tr> </table>";
 
 var rayBundleAnglesSr1 = rayBundleAngles(L1, L2, L3, Source1, L1dataSr1, L2dataSr1, L3dataSr1);
 //console.log("rbaBot",rayBundleAnglesSr1.angleBot, "rbaTop", rayBundleAnglesSr1.angleTop, "rbaDelta",rayBundleAnglesSr1.angleDelta);
@@ -1065,7 +1430,7 @@ L3Check = document.getElementById("lens3Check").checked;
 
 D1.position = parseFloat(document.getElementById("det1x").value);
 
-background(64, 224, 208);
+background(245, 245, 255);
 
 if (L1Check){
   
@@ -1113,52 +1478,132 @@ L1dataSr3 = lensParameters(L1,Source3);
 L2dataSr3 = lensParameters(L2,Source3);
 L3dataSr3 = lensParameters(L3,Source3);
 
-L1info.innerHTML="Lens 1 &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L1dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L1dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L1dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L1dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L1dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L1dataSr1.h2.toFixed(2).toString();
-L2info.innerHTML="Lens 2  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L2dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L2dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L2dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L2dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L2dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L2dataSr1.h2.toFixed(2).toString();
-L3info.innerHTML="Lens 3  &rarr; More Info:" + "<br>" + "&lambda; = " + Source1.lambda.toString() + "<br>" + "&nbsp;&nbsp;n = " + L3dataSr1.n.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;fl = " + L3dataSr1.focalLength.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;bfl = " + L3dataSr1.bfl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;ffl = " + L3dataSr1.ffl.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h1 = " + L3dataSr1.h1.toFixed(2).toString() + "<br>" + "&nbsp;&nbsp;h2 = " + L3dataSr1.h2.toFixed(2).toString();
+
+
+lam1L1info.innerHTML="<table><tr><td>n = " + L1dataSr1.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L1dataSr1.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L1dataSr1.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L1dataSr1.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L1dataSr1.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L1dataSr1.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam2L1info.innerHTML="<table><tr><td>n = " + L1dataSr2.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L1dataSr2.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L1dataSr2.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L1dataSr2.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L1dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L1dataSr2.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam3L1info.innerHTML="<table><tr><td>n = " + L1dataSr3.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L1dataSr3.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L1dataSr3.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L1dataSr3.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L1dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L1dataSr3.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam1L2info.innerHTML="<table><tr><td>n = " + L2dataSr1.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L2dataSr1.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L2dataSr1.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L2dataSr1.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L2dataSr1.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L2dataSr1.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam2L2info.innerHTML="<table><tr><td>n = " + L2dataSr2.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L2dataSr2.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L2dataSr2.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L2dataSr2.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L2dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L2dataSr2.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam3L2info.innerHTML="<table><tr><td>n = " + L2dataSr3.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L2dataSr3.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L2dataSr3.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L2dataSr3.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L2dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L2dataSr3.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam1L3info.innerHTML="<table><tr><td>n = " + L3dataSr1.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L3dataSr1.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L3dataSr1.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L3dataSr1.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L3dataSr1.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L3dataSr1.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam2L3info.innerHTML="<table><tr><td>n = " + L3dataSr2.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L3dataSr2.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L3dataSr2.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L3dataSr2.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L3dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L3dataSr2.ffl.toFixed(2).toString() + "</td> </tr> </table>";
+
+lam3L3info.innerHTML="<table><tr><td>n = " + L3dataSr3.n.toFixed(2).toString() + " </td> <td>&nbsp;&nbsp;&nbsp;&nbsp;fl = " + L3dataSr3.focalLength.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>1</sub> = " + L3dataSr3.h1.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;bfl = " + L3dataSr3.bfl.toFixed(2).toString() + "</td> </tr> <tr> <td>h<sub>2</sub> = " + L3dataSr2.h2.toFixed(2).toString() + "</td> <td>&nbsp;&nbsp;&nbsp;&nbsp;ffl = " + L3dataSr3.ffl.toFixed(2).toString() + "</td> </tr> </table>";
 
 //console.log(Sr1Check, Sr2Check, Sr3Check);
 
-if (Sr1Check)
+if (Sr1Check && Source1.x === 0)
 {
-  // SOMETHING MAY NEED TO CHANGE WITH RAYBUNDLEANGLES SO I'M NOT WRITING OVER ITSELF???
   rayBundleAnglesSr1 = rayBundleAngles(L1, L2, L3, Source1, L1dataSr1, L2dataSr1, L3dataSr1);
-  //var temp = rayBundleAngles(L1, L2, L3, Source1, L1dataSr1, L2dataSr1, L3dataSr1);
-  //console.log("rbaBot",rayBundleAnglesSr1.angleBot, "rbaTop", rayBundleAnglesSr1.angleTop, "rbaDelta",rayBundleAnglesSr1.angleDelta);
+    if (rayBundleAnglesSr1.angleDelta < 0)
+  {
+    fill(Source1.color);
+    text("Vignetted", width/2, 15);
+  }
+  else
+  {
   Source1.changeRays(rayBundleAnglesSr1.angleTop, rayBundleAnglesSr1.angleDelta);
-  //Source1.changeRays(0.119, 0.04);
-  //var lengo = Source1.rays.length;
-  //console.log(Source1.x, Source1.y);
-  //console.log("#Sr1Rays",Source1.rays.length);
   Source1.traceRays();
+  }
 }
 
-if (Sr2Check)
+if (Sr2Check && Source2.x === 0)
 {
   rayBundleAnglesSr2 = rayBundleAngles(L1, L2, L3, Source2, L1dataSr2, L2dataSr2, L3dataSr2);
+  if (rayBundleAnglesSr2.angleDelta < 0)
+  {
+    fill(Source2.color);
+    text("Vignetted", width/2, 25);
+  }
+  else
+  {
   Source2.changeRays(rayBundleAnglesSr2.angleTop, rayBundleAnglesSr2.angleDelta);
-  //console.log(Source2.x, Source2.y);
-  //Source2.changeRays(0.119, 0.04);
-  //console.log("#Sr2Rays",Source2.rays.length);
   Source2.traceRays();
+  }
 }
 
-if (Sr3Check)
+if (Sr3Check && Source3.x === 0)
 {
 
   rayBundleAnglesSr3 = rayBundleAngles(L1, L2, L3, Source3, L1dataSr3, L2dataSr3, L3dataSr3);
+  if (rayBundleAnglesSr3.angleDelta < 0)
+  {
+    fill(Source3.color);
+    text("Vignetted", width/2, 35);
+  }
+  else
+  {
   Source3.changeRays(rayBundleAnglesSr3.angleTop, rayBundleAnglesSr3.angleDelta);
-  //console.log(Source3.x, Source3.y);
-  //Source3.changeRays(0.119, 0.04);
-  //console.log("#Sr3Rays",Source3.rays.length);
   Source3.traceRays();
+  }
 }
-  
+
+if (Sr1Check && Source1.x === -Infinity)
+{
+  rayBundleSr1 = rayBundle(L1, L2, L3, Source1, L1dataSr1, L2dataSr1, L3dataSr1);
+    if (rayBundleSr1.yDelta < 0)
+  {
+    fill(Source1.color);
+    text("Vignetted", width/2, 15);
+  }
+  else
+  {
+  Source1.changeRaysPar(rayBundleSr1);
+  Source1.traceRays();
+  }
+}
+
+if (Sr2Check && Source2.x === -Infinity)
+{
+  rayBundleSr2 = rayBundle(L1, L2, L3, Source2, L1dataSr1, L2dataSr1, L3dataSr1);
+    if (rayBundleSr2.yDelta < 0)
+  {
+    fill(Source2.color);
+    text("Vignetted", width/2, 15);
+  }
+  else
+  {
+  Source2.changeRaysPar(rayBundleSr2);
+  Source2.traceRays();
+  }
+}
+
+if (Sr3Check && Source3.x === -Infinity)
+{
+  rayBundleSr3 = rayBundle(L1, L2, L3, Source3, L1dataSr1, L2dataSr1, L3dataSr1);
+    if (rayBundleSr3.yDelta < 0)
+  {
+    fill(Source3.color);
+    text("Vignetted", width/2, 15);
+  }
+  else
+  {
+  Source3.changeRaysPar(rayBundleSr3);
+  Source3.traceRays();
+  }
+}
+document.getElementById("tabLam1").innerHTML = Source1.lambda + " &mu;m";
+document.getElementById("tabLam2").innerHTML = Source2.lambda + " &mu;m";
+document.getElementById("tabLam3").innerHTML = Source3.lambda + " &mu;m";
+document.getElementById("tab2Lam1").innerHTML = Source1.lambda + " &mu;m";
+document.getElementById("tab2Lam2").innerHTML = Source2.lambda + " &mu;m";
+document.getElementById("tab2Lam3").innerHTML = Source3.lambda + " &mu;m";
+document.getElementById("tab3Lam1").innerHTML = Source1.lambda + " &mu;m";
+document.getElementById("tab3Lam2").innerHTML = Source2.lambda + " &mu;m";
+document.getElementById("tab3Lam3").innerHTML = Source3.lambda + " &mu;m";
 }
 
 document.getElementById("lensTable").addEventListener("change", upDateCanvasView);
 document.getElementById("sourceTable").addEventListener("change", upDateCanvasView);
-
+document.getElementById("detectorTable").addEventListener("change", upDateCanvasView);
 
 mousePressed = function()
 {
@@ -1174,6 +1619,8 @@ mousePressed = function()
     L3.S1.position = parseFloat(document.getElementById("lens3Xpos").value);
     L3.handleClick(mouseX, mouseY);
 }
+D1.handleClick(mouseX, mouseY);
+
 }
 
 mouseDragged = function()
@@ -1182,18 +1629,21 @@ mouseDragged = function()
     
     L1.handleDrag(mouseX, mouseY);
     document.getElementById("lens1Xpos").value = L1.S1.position.toFixed(2);
-    upDateCanvasView();
+
 }
   if (L2Check){
     L2.handleDrag(mouseX, mouseY);
     document.getElementById("lens2Xpos").value = L2.S1.position.toFixed(2);
-    upDateCanvasView();
+
 }
   if (L3Check){
     L3.handleDrag(mouseX, mouseY);
     document.getElementById("lens3Xpos").value = L3.S1.position.toFixed(2);
-    upDateCanvasView();
+    
 }
+D1.handleDrag(mouseX, mouseY);
+document.getElementById("det1x").value = D1.position.toFixed(2);
+upDateCanvasView();
 }
 
 mouseReleased = function()
@@ -1210,6 +1660,7 @@ mouseReleased = function()
     L3.stopDrag();
   
 }
+D1.stopDrag();
 }
 
 
